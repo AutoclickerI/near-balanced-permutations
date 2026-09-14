@@ -1,0 +1,884 @@
+\section{Bounded insertions and fixed-\texorpdfstring{$k$}{k} realization}\label{sec:sharp-four}
+The local core vector records what a bounded-prefix row and finitely many
+insertions can change.  For standard sheets, a moment realization attains
+the resulting LP bound with a nonconstructive family
+$\Xi_N^{(k,\theta)}$ for fixed $k$ and aspect.  A separate periodic orientation gives the explicit
+$k=4$ family $\Sigma_N$, with $12$/$17$ insertions and constant $1/192$.
+Both optima are relative to their stated completion classes and neither
+replaces the universal family $\Pi_N$.
+
+\subsection{The boundary leading vector}
+
+For a fixed $0<\delta<1$ and integers $0<r<b$, define the shifted
+mechanical set
+\[
+ R_\delta(b,r)=
+ \left\{\left\lfloor\frac{(j-\delta)b}{r}\right\rfloor+1:
+          1\le j\le r\right\}\subseteq[b].
+\]
+Its elements are distinct, and for every $0\le z\le b$,
+\begin{equation}\label{eq:shifted-prefix}
+ \left|\,|R_\delta(b,r)\cap[z]|-\frac rbz\right|\le2.
+\end{equation}
+Indeed, with $y_j=\lfloor(j-\delta)b/r\rfloor+1$, the condition
+$y_j\le z$ is $j<\delta+rz/b$; the number of eligible integers differs
+from $rz/b$ by at most two.  Thus every shifted selector satisfies the
+hypothesis of Proposition~\ref{prop:boundary-leading}.  The midpoint set
+$R_{1/2}(b,r)$ is generally distinct from the ceiling selector $R_{b,r}$
+used in Section~\ref{sec:construction}.
+
+For $1\le t\le k$ write
+\[
+ f_{k,t}^{(b)}(y)=
+ \binom{y-1}{t-1}\binom{b-y}{k-t},
+\]
+and, for $R\subseteq[b]$ with $|R|=r$, put
+\begin{equation}\label{eq:q-boundary}
+ q_{k,t}(b,R)=\frac1{b^{k-1}}
+ \left(\sum_{y\in R}f_{k,t}^{(b)}(y)
+       -\frac rb\binom bk\right).
+\end{equation}
+This is the normalized error from replacing $R$ by density $r/b$ against
+this rank weight.  For example, $R_{1/2}(5,2)=\{2,4\}$ gives
+$q_{4,3}=1/125$.  At scale $N^{k-1}$ it is the only pattern-dependent
+boundary term; collision terms become uniform after density replacement.
+
+\begin{lemma}[bounded-prefix Abel estimate]\label{lem:bounded-prefix-abel}
+Let $g$ be supported on an integer interval $I=[u,v]$, and suppose every
+initial sum on that interval satisfies
+\[
+ \left|\sum_{y=u}^z g(y)\right|\le D
+ \qquad (u\le z\le v).
+\]
+Then every weight $W:I\to\mathbb R$ satisfies
+\begin{equation}\label{eq:bounded-prefix-abel}
+ \left|\sum_{y=u}^v g(y)W(y)\right|
+ \le D\left(|W(v)|+
+       \sum_{y=u}^{v-1}|W(y+1)-W(y)|\right).
+\end{equation}
+If $\sum_I g=0$, the endpoint term $D|W(v)|$ may be omitted.  In
+particular, if $D=O(1)$, $W$ is a polynomial of degree at most $d$, and
+$\lVert W\rVert_\infty=O_d(b^d)$ on $I\subseteq[b]$, then the left side is
+$O_{d,D}(b^d)$, uniformly in the subinterval endpoints.  These hypotheses
+hold for the rank-completion weights below, whose binomial factors have
+arguments between $0$ and $b$.
+\end{lemma}
+
+\begin{proof}
+Set $G(z)=\sum_{y=u}^z g(y)$.  Summation by parts gives
+$\sum gW=G(v)W(v)+\sum_{y=u}^{v-1}G(y)(W(y)-W(y+1))$,
+which proves \eqref{eq:bounded-prefix-abel}; $G(v)=0$ removes the endpoint
+term.  A fixed-degree polynomial has $O_d(1)$ monotonicity intervals, so
+its total variation is $O_d(b^d)$ when its size is $O_d(b^d)$.  The same
+size bound holds for the rank-completion weights because a degree-$j$
+binomial factor is at most $b^j/j!$.
+\end{proof}
+
+\begin{proposition}[boundary leading vector]\label{prop:boundary-leading}
+Fix $k\ge2$.  Suppose $a,b\to\infty$, $a/b\to\theta>0$, and
+$R\subseteq[b]$, $|R|=r$, satisfies
+\[
+ \sup_{0\le z\le b}
+ \left|\,|R\cap[z]|-\frac rbz\right|=O(1).
+\]
+For
+\[
+ F=([a]\times[b])\cup(\{a+1\}\times R),
+ \qquad N=2|F|,
+\]
+one has, uniformly over $\tau\in\Ssym_k$,
+\begin{equation}\label{eq:boundary-leading}
+ \frac{\#_\tau(\Pi(F))-\binom Nk/k!}{N^{k-1}}
+ =\frac{h_{k,\tau}(\theta)}{2k!(k-2)!}
+  +\frac{2}{(k-1)!}q_{k,\tau(k)}(b,R)+o(1).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Let $C$ be a fixed bound for the prefix discrepancy.  Use the composition--colour-word
+partition from Theorem~\ref{thm:exact-rectangle}.  For
+$\alpha=(\alpha_1,\ldots,\alpha_p)$ put
+\[
+ I_\alpha=\{k-\alpha_p+1,\ldots,k\},
+\]
+the last $X$-block.  When a term uses the partial row, this block has
+abscissa $a+1$.  For $\alpha,\beta\vDash k$, set
+\[
+ Q_{\alpha,\beta,\tau}
+ =\{p_\beta(\tau(i)):i\in I_\alpha\}\subseteq[\ell(\beta)]
+\]
+and, for $Q\subseteq[q]$, set
+\[
+ S_Q(b,R)=\sum_{1\le y_1<\cdots<y_q\le b}
+               \prod_{j\in Q}{\bf1}_R(y_j).
+\]
+The partial-row contribution of $(\alpha,\beta)$ is exactly
+\begin{equation}\label{eq:partial-composition}
+ \binom a{p-1}w_\tau(\alpha,\beta)
+ S_{Q_{\alpha,\beta,\tau}}(b,R),
+ \qquad p=\ell(\alpha),\quad q=\ell(\beta).
+\end{equation}
+Indeed, the other $p-1$ abscissae lie in $[a]$, and precisely the ordinate
+levels meeting the last $X$-block must lie in $R$.  This condition depends
+only on the coordinate blocks, so the full colour sum $w_\tau$ is retained.
+
+The summand in \eqref{eq:partial-composition} is
+$O_k(a^{p-1}b^q)$.  Therefore $p+q\le2k-2$ contributes
+$O_k(b^{2k-3})=o(N^{k-1})$.  For the partial-row part with $p=q=k$,
+$w_\tau(1^k,1^k)=2^k$ and $Q=\{\tau(k)\}$, giving
+\[
+ 2^k\binom a{k-1}\sum_{y\in R}f_{k,\tau(k)}^{(b)}(y).
+\]
+The profile average of the sum is $(r/b)\binom bk$ by Vandermonde;
+after division by $N^{k-1}$, the centred remainder is the
+second term of \eqref{eq:boundary-leading}.
+
+It remains to handle $p+q=2k-1$, for which $|Q|\le2$.  Uniformly for fixed
+$Q\subseteq[q]$ with $|Q|\le2$,
+\begin{equation}\label{eq:density-replacement}
+ S_Q(b,R)=\left(\frac rb\right)^{|Q|}\binom bq
+          +O_{k,C}(b^{q-1}).
+\end{equation}
+For $|Q|=0$ this is exact.  For $|Q|=1$, apply
+Lemma~\ref{lem:bounded-prefix-abel} to $g={\bf1}_R-r/b$, whose prefix sums
+are bounded by $C$, and to
+$W_{q,j}(y)=\binom{y-1}{j-1}\binom{b-y}{q-j}$; its degree is $q-1$, so
+the error is $O_{k,C}(b^{q-1})$.  If $Q=\{j,\ell\}$ with $j<\ell$,
+expand each indicator as $r/b+g$.  The one-$g$ terms are covered by the
+same argument.  For the two-$g$ term, fix $v=y_\ell$; the inner sum over
+$u=y_j<v$ has weight
+\[
+ U_v(u)=\binom{u-1}{j-1}
+        \binom{v-u-1}{\ell-j-1}
+        \binom{b-v}{q-\ell},
+\]
+with inadmissible binomial coefficients zero.  Every interval sum of $g$
+has absolute value at most $2C$.  The support of $U_v$ is
+$\{j,\ldots,v-(\ell-j)\}$, and on it $U_v$ has degree at most $q-2$,
+supremum $O_k(b^{q-2})$, and variation $O_k(b^{q-2})$.  Abel summation,
+retaining its endpoint term, gives uniformly in $v$
+\[
+ \left|\sum_{u<v}g(u)U_v(u)\right|
+ \le 2C\bigl(\lVert U_v\rVert_\infty+\operatorname{Var}(U_v)\bigr)
+ =O_{k,C}(b^{q-2}).
+\]
+Since $|g(v)|\le1$, summing over $v$ gives $O_{k,C}(b^{q-1})$ and proves
+\eqref{eq:density-replacement}.
+
+The only leading partial-row types are $(p,q)=(k-1,k)$ and $(k,k-1)$.
+In the first, $\beta=1^k$, $\alpha$ has one part of size two, and
+$|Q|=\alpha_p\in\{1,2\}$, independently of $\tau$; in the second,
+$\alpha=1^k$ and $|Q|=1$.  After
+\eqref{eq:density-replacement}, the first main term is
+$(r/b)^{\alpha_p}$ times the corresponding complete-row class with the
+largest abscissa fixed at $a+1$.  For each fixed original $x$-multiset and
+set of distinct ordinates, the first part of Lemma~\ref{lem:core-uniform},
+with its full colour sum, makes this vector pattern-uniform.  The second
+main term is $r/b$ times the analogous class with distinct abscissae and one
+repeated ordinate, which is uniform by the symmetric part of that lemma.  No
+claim is needed for an individual colour word; \eqref{eq:partial-composition}
+retains the complete sum, and the scalar depends only on the composition.
+
+Each replacement error is
+$O_{k,C}(a^{p-1}b^{q-1})=O_{k,C}(b^{2k-3})$, and there are finitely many
+compositions for fixed $k$.  Thus all partial-row main terms other than the
+clean boundary term are pattern-uniform and all errors are
+$o(N^{k-1})$.  The complete core contributes the first term of
+\eqref{eq:boundary-leading} by \eqref{eq:rectangular-leading}.
+\end{proof}
+
+\begin{corollary}[universal-family coefficient]\label{cor:fixed-coefficient}
+For every fixed $k\ge2$, with $\Lambda_k$ as in
+Theorem~\ref{thm:exact-rectangle},
+\[
+ \limsup_{N\to\infty}\frac{\delta_{\Pi_N,k}}{N^{k-1}}
+ \le\frac{\Lambda_k}{2^{k-1}}+\frac{3k-1}{k!(k-1)!}.
+\]
+\end{corollary}
+\begin{proof}
+Lemma~\ref{lem:rank-balance} gives $|q_{k,t}(b,R_{b,r})|\le1/(k-1)!$.
+Proposition~\ref{prop:boundary-leading}, with $a/b\to1$, bounds the even-order
+limsup by $\Lambda_k/2^{k-1}+2/((k-1)!)^2$.
+For odd orders, \eqref{eq:padding-sharp} adds
+$(k-1)/(k!(k-1)!)$: the term $\delta_{\Pi_{N-1},k-1}$ is lower order for
+fixed $k\ge3$, and $\delta_{\Pi_{N-1},1}=0$. Summing proves the claim.
+\end{proof}
+
+\begin{lemma}[midpoint quadrature]\label{lem:midpoint-quadrature}
+Suppose $b,r\to\infty$ and $r/b\to\lambda\in(0,1)$ is irrational.  For
+every fixed $k$ and $t$,
+\[
+ q_{k,t}\bigl(b,R_{1/2}(b,r)\bigr)\longrightarrow0.
+\]
+\end{lemma}
+
+\begin{proof}
+Let
+\[
+ A_z=|R_{1/2}(b,r)\cap[z]|-\frac rbz
+ \qquad(0\le z\le b).
+\]
+Vandermonde and summation by parts give
+\begin{equation}\label{eq:midpoint-abel}
+ q_{k,t}\bigl(b,R_{1/2}(b,r)\bigr)
+ =-\frac1{b^{k-1}}\sum_{z=1}^{b-1}
+ A_z\bigl(f_{k,t}^{(b)}(z+1)-f_{k,t}^{(b)}(z)\bigr).
+\end{equation}
+Write $\langle x\rangle=x-\lceil x\rceil+1$.  Then
+$A_z=\frac12-\langle\frac12+rz/b\rangle$, and the pairs
+\[
+ \left(\frac zb,\left(\frac12+\frac{rz}{b}\right)\!\!\pmod1\right),
+ \qquad 1\le z<b,
+\]
+are equidistributed in $[0,1]^2$.  Indeed, for fixed integers $m,n$ not
+both zero the Fourier sum is geometric with ratio
+$\exp(2\pi i(m+nr)/b)$.  For $n\ne0$ this tends to
+$\exp(2\pi i n\lambda)\ne1$, while for $n=0$ the complete roots-of-unity
+sum has normalized magnitude $O(1/b)$.  The integer endpoints of
+$\langle\cdot\rangle$ account for $o(b)$ indices, since the reduced
+denominators tend to infinity.
+
+Put
+$g_{k,t}(x)=x^{t-1}(1-x)^{k-t}/((t-1)!(k-t)!)$.  Uniformly for
+$0\le z<b$,
+\[
+ \frac{f_{k,t}^{(b)}(z+1)-f_{k,t}^{(b)}(z)}{b^{k-2}}
+ =g'_{k,t}(z/b)+O_k(1/b).
+\]
+Thus \eqref{eq:midpoint-abel} is an equidistributed Riemann sum for
+$(\frac12-u)g'_{k,t}(x)$, whose integral is zero because
+$\int_0^1(\frac12-u)\,du=0$.  The uniform remainder and the exceptional
+indices are $o(1)$, proving the limit.
+\end{proof}
+
+\begin{lemma}[dimension search]\label{lem:dimension-search}
+Fix $\lambda\in(0,1)$. For sufficiently large integers $E$, put
+$B=\lfloor\sqrt E\rfloor$ and $L=\lceil B^{2/3}\rceil$.
+Among $b=B,\ldots,B+L$, choose the smallest minimizer of
+$d(E/b,\lambda)$, where $d(u,v)=\min_{m\in\mathbb Z}|u-v-m|$,
+and set $a=\lfloor E/b\rfloor$, $r=E-ab$. Then
+\begin{equation}\label{eq:dimension-search}
+ a/b\longrightarrow1,\qquad r/b\longrightarrow\lambda.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Every candidate has $b/B\to1$ and $a/b\to1$. For
+$0\le j\le J=\lfloor2\sqrt B\rfloor<L$, put $F_j=E/(B+j)+j$.
+Uniformly in this range,
+\[
+ F_j=E/B+j^2/B+O(B^{-1/2}),\qquad
+ F_{j+1}-F_j=O(B^{-1/2}).
+\]
+Since $F_J-F_0\to4$, the first crossing of a level in
+$\mathbb Z+\lambda$ between the endpoints has overshoot $O(B^{-1/2})$.
+Subtracting the integer $j$ does not change its distance modulo one,
+so the minimum tends to zero. As $\lambda\in(0,1)$, this gives the
+ordinary limit $r/b\to\lambda$ and eventually $0<r<b$.
+\end{proof}
+
+\subsection{Uniform fixed-\texorpdfstring{$k$}{k} insertion expansion}
+A \emph{point insertion} adjoins an element to both defining total orders
+without changing the old relative orders.  With $n$ old elements, encode its
+slot by normalized ranks $(u,v)=(x/n,y/n)$, where $x,y$ count old elements
+preceding it.  All slots are allowed, including endpoints and slots inside
+coordinate blocks or the partial row; total orders resolve displayed ties.
+
+For fixed $k$, put
+\[
+ A_k=2k!(k-2)!,\qquad s_k=((k-1)!)^2,
+ \qquad B^{(k)}_j(u)=\binom{k-1}{j}u^j(1-u)^{k-1-j}
+ \quad(0\leq j\leq k-1).
+\]
+The following lemma is the uniform insertion statement used by both the
+explicit four-point construction and the fixed-$k$ theorem.
+
+\begin{lemma}[uniform fixed-$k$ insertion expansion]\label{lem:finite-padding}
+Fix $k\ge2$.  Suppose $a,b\to\infty$, $a/b\to\theta>0$, and
+\[
+ F=([a]\times[b])\cup(\{a+1\}\times R),
+ \qquad n=2|F|,
+\]
+where $R\subseteq[b]$ has bounded prefix discrepancy as in
+Proposition~\ref{prop:boundary-leading}.  Fix $M$, and make $m\le M$ point
+insertions with normalized ranks $(u_j,v_j)\in[0,1]^2$, or with arbitrary
+slots having those normalized ranks.  If $N=n+m$ is the resulting size,
+then, uniformly over the list, the slots, and $\tau\in\Ssym_k$,
+\begin{equation}\label{eq:insertion-leading}
+\begin{aligned}
+ \frac{\#_\tau(\sigma)-\binom Nk/k!}{N^{k-1}}
+ &=\frac{h_{k,\tau}(\theta)}{A_k}
+  +\frac{2}{(k-1)!}q_{k,\tau(k)}(b,R)\\[-2pt]
+ &\quad+\sum_{j=1}^m\left[
+    \frac1{s_k}\sum_{i=1}^k
+      B^{(k)}_{i-1}(u_j)B^{(k)}_{\tau(i)-1}(v_j)
+    -\frac1{k!(k-1)!}\right]+o(1).
+\end{aligned}
+\end{equation}
+For asymptotic purposes, a slot with normalized ranks $(u_j,v_j)$ may,
+when $m\ge1$, be represented by the point
+\begin{equation}\label{eq:inserted-points}
+ p_j=\left(\lfloor u_ja\rfloor+\frac{j}{m+1},
+            \lfloor v_jb\rfloor+\frac{j}{m+1},0\right),
+ \qquad 1\le j\le m.
+\end{equation}
+The fractional offsets separate the displayed inserted points; arbitrary
+slots, including endpoints and slots inside coordinate blocks, are handled
+by the movement estimate in the proof.  The old points use the same
+coordinate keys as in \eqref{eq:keys}.
+\end{lemma}
+
+\begin{proof}
+For the displayed representatives, configurations containing at least two
+inserted points number $O_{k,M}(n^{k-2})$; the case $m=0$ is empty.  Fix
+one inserted point $p_j$ and suppose it has position $i$ in the selected
+$X$-order and value position $\tau(i)$ in the selected $Y$-order.  After
+excluding a partial-row point and all old coordinate collisions, its leading
+coordinate-set contribution is
+\[
+ 2^{k-1}\binom{\lfloor u_ja\rfloor}{i-1}
+              \binom{a-\lfloor u_ja\rfloor}{k-i}
+              \binom{\lfloor v_jb\rfloor}{\tau(i)-1}
+              \binom{b-\lfloor v_jb\rfloor}{k-\tau(i)}.
+\]
+The $O(1)$ fractional offsets in \eqref{eq:inserted-points} are covered by
+the uniform binomial estimate below.  The factor $2^{k-1}$ counts the
+independent old colours; once the two coordinate sets and the insertion
+ranks are fixed, the pattern fixes the cell bijection.
+
+Uniformly for $0\le u\le1$ and fixed $d\ge1$,
+\[
+ \binom{\lfloor ua\rfloor+O(1)}d
+ =\frac{(ua)^d}{d!}+O_d(a^{d-1}),
+\]
+with the analogous estimate for $b,v$ and exact value one when $d=0$.
+The absolute estimates include $u,v=0,1$.  Summing over $i$ and using
+$N^{k-1}\sim(2ab)^{k-1}$ gives
+\[
+ \frac1{s_k}\sum_{i=1}^k
+ B^{(k)}_{i-1}(u_j)B^{(k)}_{\tau(i)-1}(v_j)
+ +O_k(a^{-1}+b^{-1}).
+\]
+The omitted repeated-old-coordinate and partial-row configurations total
+\[
+ O_k(a^{k-2}b^{k-1}+a^{k-1}b^{k-2}+a^{k-2}rb^{k-2})
+ =O_{k,\theta}(n^{k-3/2}),
+\]
+uniformly in the cuts, hence are $o(n^{k-1})$ because $r<b$ and
+$a/b\to\theta$.  The same holds for the multi-insertion configurations.
+The target changes by
+\[
+ \frac1{k!}\left(\binom{n+m}{k}-\binom nk\right)
+ =\frac{m\,n^{k-1}}{k!(k-1)!}+O_{k,M}(n^{k-2}),
+\]
+which supplies the bracket in \eqref{eq:insertion-leading}.  Proposition~\ref{prop:boundary-leading}
+supplies the core and row terms, while its Abel estimate gives
+$q_{k,t}(b,R)=O_k(1)$.  This proves the formula for the representatives,
+uniformly in the macro-coordinates.
+
+For an arbitrary slot, a cut at $x=ua$ has $2b$ old points per complete
+column and at most $2|R|=O(b)$ partial-row points; its old rank therefore
+differs from the prescribed rank by $O(a+b)$.  The analogous $y$-cut bound
+uses column masses $2a$ and at most two extra points.  Moving an insertion
+through $D=O(a+b)=O(\sqrt n)$ old positions changes at most
+$\binom{n+m-2}{k-2}=O_{k,M}(n^{k-2})$ configurations per position; all
+configurations with two inserted points total $O_{k,M}(n^{k-2})$.  The
+movement error is consequently
+$O_{k,M}(n^{k-3/2})=o(n^{k-1})$.  Finally, perturbing finitely many
+coincident displayed coordinates by $o(1)$ in normalized units removes all
+old and new coordinate ties.  Continuity of the Bernstein factors preserves
+the leading term and the endpoint uniformity.
+\end{proof}
+
+\subsection{Bounded moment realization}
+We realize any bounded centered correction with a bounded number of insertions.
+Let
+\[
+ \mathbf1=(1,\ldots,1)^{\mathsf T},\qquad
+ \mathcal P_k=I_k-\frac1k\mathbf1\mathbf1^{\mathsf T},\qquad
+ \mathcal V_k=\{T\in\mathbb R^{k\times k}:T\mathbf1=0,\ \mathbf1^{\mathsf T}T=0\}.
+\]
+For a finite ordered list $Z=((u_\ell,v_\ell))_{\ell=1}^m$ in $[0,1]^2$, put
+\[
+ \Phi_k(Z)=\mathcal P_k\left(\sum_{\ell=1}^m
+ B^{(k)}(u_\ell)B^{(k)}(v_\ell)^{\mathsf T}\right)\mathcal P_k,
+ \qquad
+ B^{(k)}(u)=(B^{(k)}_0(u),\ldots,B^{(k)}_{k-1}(u))^{\mathsf T}.
+\]
+Then $\Phi_k(Z)\in\mathcal V_k$.  If
+$Q=\sum_{\ell=1}^mB^{(k)}(u_\ell)B^{(k)}(v_\ell)^{\mathsf T}$, then
+$\sum_{i,j}Q_{ij}=m$ and, for every $\tau\in\Ssym_k$,
+\begin{equation}\label{eq:centered-assignment}
+ \sum_{i=1}^k(\mathcal P_kQ\mathcal P_k)_{i,\tau(i)}
+ =\sum_{i=1}^kQ_{i,\tau(i)}-\frac mk.
+\end{equation}
+
+\begin{lemma}[compact centered moment realization]\label{lem:moment-realization}
+For every compact set $K\subset\mathcal V_k$, there are an integer $m$ and a
+continuous choice of an $m$-point list $Z(T)$, $T\in K$, with all coordinates
+in a fixed compact subset of $(0,1)^2$, such that
+\[
+ \Phi_k(Z(T))=T\qquad(T\in K).
+\]
+The integer $m$ may be chosen even.  There is also an odd integer $h$ and an
+$h$-point neutral list $Z_{\rm odd}$ with $\Phi_k(Z_{\rm odd})=0$.
+\end{lemma}
+
+\begin{proof}
+For general averaging sets see Seymour--Zaslavsky~\cite{SeymourZaslavsky}.
+Take a positive $k$-node Gauss rule $(x_i,w_i)$ on $[0,1]$, with distinct
+interior nodes, exact through degree $2k-1$. For every sufficiently large
+$L$, choose positive integers $n_i$ with $\sum_i n_i=L$ and
+$n_i/L=w_i+O(1/L)$. Fix one node $x_{i_0}$. The Jacobian
+$(d w_i x_i^{d-1})_{1\le d\le k-1,\ i\ne i_0}$ is an invertible
+Vandermonde scaling, so the implicit-function theorem adjusts the other
+nodes by $O(1/L)$ to restore moments $1/(d+1)$ for $1\le d\le k-1$.
+Degree zero is automatic. The resulting equal-weight list $U_L$ satisfies
+$\sum_{u\in U_L}B^{(k)}(u)=(L/k)\mathbf1$, with support in a fixed interior
+compact interval. This works for every large $L$, including odd $L$.
+
+Fix one such $L$.  The product $Z_0=U_L\times U_L$ is neutral, with
+uncentered moment matrix $L^2\mathbf1\mathbf1^{\mathsf T}/k^2$.  Moving the
+$u$-coordinate of one indexed copy at each distinct support pair gives
+Jacobian columns
+$B^{(k)\prime}(x_i)(\mathcal P_kB^{(k)}(y_j))^{\mathsf T}$.  The vectors
+$B^{(k)\prime}(x_i)$ span the zero-sum hyperplane: a vector orthogonal to
+all of them gives a Bernstein polynomial whose derivative vanishes at $k$
+distinct points, hence is constant.  The vectors
+$\mathcal P_kB^{(k)}(y_j)$ span the same hyperplane because the Bernstein
+evaluation matrix is invertible.  Thus the derivative of $\Phi_k$ is onto
+$\mathcal V_k$, of dimension $(k-1)^2$.  Fixing complementary coordinates,
+the inverse-function theorem provides a continuous local right inverse near
+$0$ with fixed list size and interior coordinates.
+
+For compact $K$, choose an even $L_0$ so large that $K/L_0$ lies in this
+neighbourhood.  Realize $T/L_0$ locally and concatenate $L_0$ copies; by
+additivity this realizes every $T\in K$ with one fixed even number $m$ of
+points, continuously in $T$.  Choosing instead a sufficiently large odd
+$L_1$ in the first construction gives
+$Z_{\rm odd}=U_{L_1}\times U_{L_1}$, with odd size $h=L_1^2$ and
+$\Phi_k(Z_{\rm odd})=0$.  All coordinates remain in one fixed interior
+compact set.
+\end{proof}
+
+\subsection{The fixed-\texorpdfstring{$k$}{k} bounded-insertion theorem}
+Fix $k\ge4$ and $\theta>0$.  A sequence is a
+\emph{prescribed-aspect bounded-insertion completion sequence} if deleting
+at most $M$ inserted points, for one constant $M$, leaves the two-sheet order
+$\Pi(F)$ with
+\[
+ F=([a]\times[b])\cup(\{a+1\}\times R),\qquad
+ a,b\to\infty,\quad a/b\to\theta,
+\]
+where $R\subseteq[b]$, $|R|=r$, and
+\[
+ \sup_{0\le z\le b}\left|\,|R\cap[z]|-\frac rbz\right|\le C
+\]
+for one constant $C$.  Insertion ranks are arbitrary, including endpoints;
+no geometric separation or limiting location is assumed.
+
+For $D\in\mathbb R^{k\times k}$ write
+$\mathsf A_D(\tau)=\sum_{i=1}^kD_{i,\tau(i)}$, and define
+\[
+ q_k(\theta)=\min_{\substack{D\in\mathbb R^{k\times k}\\
+                       \sum_{i,j}D_{ij}=0}}
+       \max_{\tau\in\Ssym_k}|h_{k,\tau}(\theta)-\mathsf A_D(\tau)|.
+\]
+The minimum is attained because these assignment vectors form a
+finite-dimensional closed subspace of $\mathbb R^{k!}$; it is the
+$\ell_\infty$ distance from $(h_{k,\tau}(\theta))_\tau$.  Replacing $D$ by
+$\mathcal P_kD\mathcal P_k$ preserves every assignment sum when
+$\sum D_{ij}=0$.
+
+\begin{theorem}[prescribed-aspect bounded-insertion optimum]\label{thm:fixed-k-insertion}
+Fix $k\ge4$ and $\theta>0$. There is a constant $M_{k,\theta}$ and, for every sufficiently large
+integer $N$, a permutation $\Xi_N^{(k,\theta)}\in\Ssym_N$ obtained from a
+two-sheet row completion with $a/b\to\theta$ by at most $M_{k,\theta}$ point insertions such
+that
+\[
+ \lim_{N\to\infty}\frac{\delta_{\Xi_N^{(k,\theta)},k}}{N^{k-1}}
+ =\frac{q_k(\theta)}{2k!(k-2)!}.
+\]
+The family may depend on $k$ and $\theta$; the construction is nonconstructive. It
+need not have rational or efficiently computable insertion coordinates.
+Conversely, every prescribed-aspect bounded-insertion completion sequence has
+\[
+ \liminf_{\nu\to\infty}
+ \frac{\delta_{\pi_\nu,k}}{N_\nu^{k-1}}
+ \geq\frac{q_k(\theta)}{2k!(k-2)!}.
+\]
+This is an optimum only within the displayed completion class, not over all
+permutations or all aspects.
+\end{theorem}
+
+\begin{proof}
+Choose a total-sum-zero $D$ attaining $q_k(\theta)$.  For the upper
+construction take the ceiling selector $R=R_{b,r}$ when $r>0$ and
+$R=\varnothing$ when $r=0$, from Section~\ref{sec:construction}.  Its prefix
+discrepancy is at most one, so
+Lemma~\ref{lem:bounded-prefix-abel} and
+Proposition~\ref{prop:boundary-leading} give a constant $C_k'$ such that,
+for every resulting old order of even size $n=2|F|$, the matrix $E_n$ with
+\[
+ (E_n)_{k,t}=\frac{2}{(k-1)!}q_{k,t}(b,R),\qquad
+ (E_n)_{i,t}=0\quad(i<k),
+\]
+has uniformly bounded entries.  Vandermonde gives
+$\sum_{t=1}^kq_{k,t}(b,R)=0$, so $E_n$ has total sum zero and
+$\mathsf A_{E_n}(\tau)$ is exactly the row term in
+\eqref{eq:boundary-leading}.
+
+Let $K$ be a compact ball in $\mathcal V_k$ containing all matrices
+\[
+ T_n=-s_k\mathcal P_k\left(\frac D{A_k}+E_n\right)\mathcal P_k.
+\]
+Lemma~\ref{lem:moment-realization} supplies one even list size $m$ realizing
+all $T_n\in K$ and one odd neutral list of size $h$.  The ball is chosen
+before $m,h$, so this choice is not circular.
+
+For even $N$ use $n=N-m$; for odd $N$ use $n=N-m-h$.  Put $E=n/2$ and choose
+\[
+ b=\lfloor\sqrt{E/\theta}\rfloor,\qquad
+ a=\left\lfloor\frac E b\right\rfloor,\qquad
+ r=E-ab,
+ \qquad R=R_{b,r}
+\]
+with $R=\varnothing$ if $r=0$.  For large sizes, $0\le r<b$ and
+$a/b\to\theta$, while $|R\cap[z]|=\lfloor rz/b\rfloor$ gives a uniform
+prefix bound.  Realize $T_n$ by $m$ insertions and append the $h$ neutral
+insertions in the odd case.  Perturb the finitely many macro-coordinates by
+$o(1)$ to make both total orders injective; choose any permutation for the
+finitely many smaller sizes.
+
+At the old size $n$, Proposition~\ref{prop:boundary-leading} gives, uniformly in $\tau$,
+\[
+ \frac{\#_\tau(\Pi(F))-\binom nk/k!}{n^{k-1}}
+ =\frac{h_{k,\tau}(\theta)}{A_k}+\mathsf A_{E_n}(\tau)+o(1).
+\]
+By Lemma~\ref{lem:finite-padding}, the realization $\Phi_k(Z)=T_n$ changes
+this vector by
+$-\mathsf A_{D/A_k+E_n}(\tau)+o(1)$; centering does not change the assignment
+sum of a total-sum-zero matrix.  The row term cancels, leaving
+\[
+ \frac{h_{k,\tau}(\theta)-\mathsf A_D(\tau)}{A_k}+o(1).
+\]
+Since $N=n+O_{k,\theta}(1)$, taking the maximum and then the limit proves
+the upper equality in the theorem.
+
+For the converse, apply Lemma~\ref{lem:finite-padding} to any sequence in
+this class.  The bounded-prefix hypothesis controls the row term and all
+errors uniformly, and the bounded insertion list contributes a centered
+moment matrix of bounded mass.  After multiplying it by $A_k/s_k$ and
+absorbing the row matrix $E_n$, the leading profile is
+\[
+ \frac{h_{k,\tau}(\theta)+\mathsf A_{D_\nu}(\tau)}{A_k}+o(1)
+\]
+for a total-sum-zero matrix $D_\nu$ (depending on $\nu$ and not required to
+converge).  Replacing $D_\nu$ by $-D_\nu$ in the definition of $q_k(\theta)$
+gives the pointwise lower bound $q_k(\theta)/A_k-o(1)$ on the maximum
+discrepancy.  Taking the liminf proves the converse.
+\end{proof}
+
+\subsection{Exact LP constants and aspect optimization}
+For each listed $(k,\theta)$ we give matching primal and dual certificates.  A
+matrix $D$ is primal for $q$ if $\sum_{i,j}D_{ij}=0$ and, for every
+$\tau\in\Ssym_k$,
+\[
+ \left|h_{k,\tau}(\theta)-\sum_iD_{i,\tau(i)}\right|\le q.
+\]
+A rational signed vector $(w_\tau)_{\tau\in\Ssym_k}$ is dual if
+\[
+ \sum_{\tau}|w_\tau|\le1,\qquad
+ \sum_{\tau:\,\tau(i)=j}w_\tau
+ \text{ is independent of }(i,j),
+ \qquad
+ \sum_{\tau}w_\tau h_{k,\tau}(\theta)=q.
+\]
+The constant-marginal condition annihilates assignment sums from every
+total-sum-zero matrix, so these primal and dual conditions match by
+$\ell_\infty$--$\ell_1$ duality.  An exact-arithmetic checker enumerates all
+patterns for each listed $(k,\theta)$ over $\mathbb Q$ or $\mathbb Q(\sqrt3)$.
+Its certificate arrays and checker are in the
+\href{https://github.com/AutoclickerI/near-balanced-permutations/tree/v1.1.0}{validation repository},
+file \texttt{validation/exact\_lp\_certificates.json}; from its root, run
+\texttt{python3 -B -m validation.certificate\_audit}.  The six rows below
+use the file's $(k,\theta)$ keys; the checker verifies these finite
+certificates, while the all-size realization is the separate content of
+Theorem~\ref{thm:fixed-k-insertion}.  Put
+\begin{equation}\label{eq:k6-aspect-optimum}
+ \rho=2-\frac{2\sqrt3}{3},\qquad q_*=\frac{111+5\sqrt3}{60}.
+\end{equation}
+\begingroup
+\renewcommand{\arraystretch}{2}
+\begin{equation}\label{eq:fixed-k-optima}
+\begin{array}{c|c|c|c}
+ k&\theta&q_k(\theta)&q_k(\theta)/(2k!(k-2)!)\\ \hline
+ 4&1&\dfrac{2}{3}&\dfrac{1}{144}\\
+ 5&1&\dfrac{5}{4}&\dfrac{1}{1152}\\
+ 6&1&2&\dfrac{1}{17280}\\
+ 7&1&\dfrac{62}{21}&\dfrac{31}{12700800}\\
+ 8&1&\dfrac{109}{28}&\dfrac{109}{1625702400}\\
+ 6&\rho&q_*&q_*/34560
+\end{array}
+\end{equation}
+\endgroup
+For a square-aspect dual, average $w_\tau$ with $w_{\tau^{-1}}$; its norm
+is still at most one and its assignment marginals remain constant.  Since inversion swaps
+$T_x,T_y$ and preserves $S$, this gives
+\[
+ q_k(\theta)\ge q_k(1)+\alpha_k(\theta+\theta^{-1}-2),\qquad
+ \alpha_k=\frac12\sum_\tau w_\tau(T_x(\tau)+T_y(\tau)-2\mu_k).
+\]
+The supplied square duals have $\alpha_k=0,0,-1/5,13/42,3/8$ for
+$k=4,\ldots,8$, respectively, so square aspect is optimal in these
+completion classes for $k=4,5,7,8$.  For $k=6$, three supplied rational
+duals give
+\[
+ q_6(\theta)\ge\max\left\{\frac85+\frac1{3\theta},\quad
+               \frac85+\frac\theta3,\quad
+               \frac{12}5-\frac{\theta+\theta^{-1}}5\right\}.
+\]
+Inversion also gives $q_k(\theta)=q_k(1/\theta)$.  On $0<\theta\le1$,
+the first bound decreases and the third increases; they meet only at $\rho$,
+where they equal $q_*$, so their maximum is strictly larger off $\rho$.
+Since the exact primal at $\rho$ attains $q_*<2=q_6(1)$, the minimizing
+aspects for $k=6$ are exactly $\rho$ and $1/\rho$ within the stated
+completion framework.
+For the four-pattern design below, write $B=B^{(4)}$ and
+$K_\tau(u,v)=\frac1{36}\sum_{i=1}^4B_{i-1}(u)B_{\tau(i)-1}(v)-\frac1{144}$
+for the single-insertion correction.
+
+\subsection{Periodic row orientations}
+\label{sec:oriented-four}
+The optimum in Theorem~\ref{thm:fixed-k-insertion} fixes the standard
+orientation of both sheets.  For four-pattern counts, changing the relative
+orientation from row to row lowers the attainable constant.  Let
+$\sigma=(\sigma_x)_{x\ge1}$ be a fixed periodic sequence in $\{-1,1\}$,
+with period $p$ and mean $\eta=p^{-1}\sum_{x=1}^p\sigma_x$.  Replace the
+second order in \eqref{eq:keys} by
+\[
+ K_Y^\sigma(x,y,c)=(y,\sigma_xcx,c),
+ \qquad K_X(x,y,c)=(x,-cy,c).
+\]
+Write $\Pi^\sigma(F)$ for this order on positive-coordinate cell sets, and put
+$U(\tau)=|\{i<4:|\tau(i+1)-\tau(i)|=1\}|$.  Thus $U$ counts pairs
+adjacent in both position and value.  Define
+\begin{equation}\label{eq:oriented-h}
+ h^\eta_\tau(\theta)=\frac{T_x(\tau)-4/3}{\theta}
+ +\theta(T_y(\tau)-4/3)+1-\frac{4\eta}{3}S(\tau)
+ -\frac{2(1-\eta)}3U(\tau).
+\end{equation}
+
+\begin{lemma}[oriented leading profile]\label{lem:oriented-leading}
+For fixed $\sigma$ and $a/b\to\theta>0$, the complete oriented rectangle
+has centred four-profile $N^3h^\eta_\tau(\theta)/96+o(N^3)$, where $N=2ab$.
+For its bounded-prefix partial-row completions and bounded insertions,
+\eqref{eq:insertion-leading} holds at $k=4$ with $h_{4,\tau}$ replaced by
+$h^\eta_\tau$.  All other terms and the uniformity in insertion ranks are
+unchanged.
+\end{lemma}
+\begin{proof}
+For compositions $\alpha,\beta\vDash4$, put $\ell=\ell(\alpha)$,
+$a_i=p_\alpha(i)$ and $b_i=p_\beta(\tau(i))$.  Prescribe signs $\varepsilon_j$ for the distinct
+rows.  Let $w^\varepsilon_\tau(\alpha,\beta)$ count colour words with
+increasing keys $(-c_ib_i,c_i)$ within $X$-blocks and
+$(\varepsilon_{a_i}c_ia_i,c_i)$ within $Y$-blocks, excluding repeated
+signed points.  For each actual row choice $x_1<\cdots<x_\ell\le a$, set
+$\varepsilon_j=\sigma_{x_j}$.  The exact core profile sums
+$w^\varepsilon_\tau(\alpha,\beta)\binom b{\ell(\beta)}$ over these choices
+and all compositions.  Defect-zero and defect-one weights are pattern-uniform for
+every prescribed row-sign word: at a single pair the two constraints are
+interchanged by reversing both colours, and singleton colours are free.
+Their full contributions therefore vanish after centering, including all
+lower coefficients of the coordinate-choice factors.
+
+For defect two, average distinct-row signs independently with mean $\eta$.
+The colour sums, aggregated over compositions with the indicated lengths,
+are
+\[
+\begin{array}{c|c}
+(\ell(\alpha),\ell(\beta))&\text{averaged colour sum}\\\hline
+(2,4)&4(T_x+1)\\
+(4,2)&4(T_y+1)\\
+(3,3)&4\bigl(9-\eta S-(1-\eta)U/2\bigr).
+\end{array}
+\]
+The one-axis rows follow from the triple and disjoint-pair counts in
+Lemma~\ref{lem:defect-two}.  For the mixed row, use the active endpoints in that proof.
+Edges with at most one common point have normalized weight $1$ if their
+active endpoints differ, and $1-\eta h_e(i)v_f(i)$ otherwise.
+If both endpoints coincide, the two points occupy one cell: the averaged
+opposite-colour weight is $(1+\eta)/2$ for a descent and $(1-\eta)/2$ for
+an ascent.  Summing these nine edge-pair cases gives
+$9-\eta S-(1-\eta)U/2$.  The repository's
+\texttt{validation/oriented\_four.py} also checks all $24$ patterns and
+the polynomial coefficients in $\eta$ directly from the tie comparisons.
+
+This independent-sign average gives the leading coefficient for a fixed
+periodic sequence: for each residue word of $\ell$ increasing rows, the
+number of choices is $a^\ell/(\ell!p^\ell)+O_p(a^{\ell-1})$.
+Multiplying by $\binom b{\ell(\beta)}$ makes this error $O_p(N^{5/2})$
+in defect two.  Larger defects have the same lower order.  For a uniform
+four-pattern, $\mathbb E T_x=\mathbb E T_y=4/3$, $\mathbb ES=3/4$,
+and $\mathbb EU=3/2$, the last identity counting the three adjacent pairs.
+Center the table, divide by the coordinate factorials and by
+$(2ab)^3$, and obtain \eqref{eq:oriented-h}/$96$.
+
+For the partial row, replace the factor $\binom a{p-1}w_\tau$ in
+\eqref{eq:partial-composition} by
+\[
+ \sum_{x_1<\cdots<x_{p-1}\le a}
+ w^{(\sigma_{x_1},\ldots,\sigma_{x_{p-1}},\sigma_{a+1})}_\tau(\alpha,\beta).
+\]
+For $(p,q)=(4,4)$ the summand is $16$ for each row choice; for
+$(3,4)$ or $(4,3)$ it is $8$, independently of the row signs and pattern.
+Thus the clean Bernstein term and the defect-one density replacement in
+Proposition~\ref{prop:boundary-leading} are unchanged.  Every remaining
+term has size $O(a^{p-1}b^q)=O(b^5)=o(N^3)$ because $p+q\le6$.
+For insertions, the leading coordinate-distinct term again ignores signs;
+collision counts and old-rank displacement bounds depend only on row and
+column sizes.  The proof of Lemma~\ref{lem:finite-padding} therefore gives
+the asserted uniform expansion, including endpoints and moving ranks.
+\end{proof}
+
+\subsection{A cubic moment design}
+
+Set $u_i=i/3$ for $0\le i\le3$, and define
+\[
+ D=\frac1{192}\begin{pmatrix}
+ 51&5&-8&-48\\
+ 18&-36&-63&81\\
+ -63&-9&72&0\\
+ -6&40&-1&-33
+ \end{pmatrix},\qquad
+ \beta_{is}=\frac34+\frac{D_{i+1,s+1}}2\quad(0\le s\le3).
+\]
+Each row of $D$ sums to zero.  Put
+\[
+ \mu_{i1}=\frac{\beta_{i1}+2\beta_{i2}+3\beta_{i3}}3,
+ \qquad \mu_{i2}=\frac{\beta_{i2}}3+\beta_{i3},
+ \qquad \mu_{i3}=\beta_{i3},
+\]
+and let $V_i$ consist of the three roots of
+\[
+ f_i(z)=z^3-\mu_{i1}z^2
+       +\frac{\mu_{i1}^2-\mu_{i2}}2z
+       -\frac{\mu_{i1}^3-3\mu_{i1}\mu_{i2}+2\mu_{i3}}6.
+\]
+Each $f_i$ changes sign from $-$ to $+$ on $(1/10,1/5)$,
+from $+$ to $-$ on $(2/5,7/10)$, and from $-$ to $+$ on $(3/4,19/20)$.
+These disjoint intervals contain all three roots, which are distinct and
+lie in $(0,1)$.  Newton identities give
+\[
+ \sum_{v\in V_i}v^j=\mu_{ij}\quad(1\le j\le3),
+ \qquad \sum_{v\in V_i}B_s(v)=\beta_{is}\quad(0\le s\le3).
+\]
+Use each pair $(u_i,v)$, $v\in V_i$, once, giving $12$ insertion
+locations.  List them by increasing $i$ and then increasing root.
+
+For odd orders append the five points in $H$, in lexicographic order, where
+\[
+ \begin{gathered}
+ G_2=\left\{\frac12-\frac1{2\sqrt3},\ \frac12+\frac1{2\sqrt3}\right\},\\[-2pt]
+ G_3=\left\{\frac12-\frac1{2\sqrt2},\ \frac12,\ \frac12+\frac1{2\sqrt2}\right\},\\[-2pt]
+ H=(\{0\}\times G_2)\cup(\{1\}\times G_3).
+ \end{gathered}
+\]
+The identities $\sum_{v\in G_2}B(v)=\frac12\mathbf1$ and
+$\sum_{v\in G_3}B(v)=\frac34\mathbf1$ give $\mathcal P Q_H\mathcal P=0$.
+The mass-$5$ identity then gives
+$\sum_{(u,v)\in H}K_\tau(u,v)=\frac1{36}(\frac12+\frac34)-\frac5{144}=0$,
+so this padding is neutral for every pattern.
+
+Here is the exact moment calculation.  With $A_{s+1,i+1}=B_s(i/3)$ for $0\le s,i\le3$,
+\[
+ 27A=\begin{pmatrix}27&8&1&0\\0&12&6&0\\0&6&12&0\\0&1&8&27\end{pmatrix},
+ \qquad
+ AD=\frac1{32}C,\qquad
+ C=\begin{pmatrix}9&-1&-4&-4\\-1&-3&-2&6\\-4&-2&3&3\\-4&6&3&-5\end{pmatrix}.
+\]
+The last identity follows by multiplying the displayed integer matrices:
+$(27A)(192D)=162C$.  Write
+$\mathcal P=I_4-\mathbf1\mathbf1^{\mathsf T}/4$, where
+$\mathbf1=(1,1,1,1)^{\mathsf T}$.  The $12$-point moment matrix is
+$Q=A(\tfrac34\mathbf1\mathbf1^{\mathsf T}+D/2)$, so
+$\mathcal P Q\mathcal P=C/64$.  Adding the neutral rule preserves this identity.  By
+\eqref{eq:centered-assignment}, both lists have the total correction
+\begin{equation}\label{eq:interior-correction}
+ \sum_j K_\tau(u_j,v_j)=\frac1{2304}\sum_{i=1}^4C_{i,\tau(i)}.
+\end{equation}
+
+Choose the period-eight orientation
+$(-,+,-,+,+,-,+,+)$, with mean $\eta=1/4$.
+Use $m=12$ when $N$ is even and $m=17$ when $N$ is odd.
+Set $\Sigma_N=\Pi_N$ if $N-m<100$.
+Otherwise apply Lemma~\ref{lem:dimension-search} to $E=(N-m)/2$ with
+$\lambda=3-\sqrt5$. Only its irrationality is needed for the profile limit.  If $r=0$, again use $\Pi_N$; this occurs
+only finitely often.  In all other cases use the oriented order $\Pi^\sigma(F)$ with row
+$R_{1/2}(b,r)$ and insert the listed $m$ points by
+\eqref{eq:inserted-points}, keeping one global
+index $j$ for all locations, including the five appended points at odd orders.
+The final point count is exactly $N$.
+
+\begin{theorem}[all-size four-point constant]\label{thm:sharp-four}
+The explicit family $(\Sigma_N)$ satisfies
+\[
+ \lim_{N\to\infty}\frac{\delta_{\Sigma_N,4}}{N^3}=\frac1{192},
+ \qquad
+ \limsup_{N\to\infty}\frac{\delta_4(N)}{N^3}\le\frac1{192}.
+\]
+Conversely, let $\pi_\nu\in\Ssym_{N_\nu}$, $N_\nu\to\infty$, be row
+completions with a fixed periodic orientation, a fixed limiting aspect
+$\theta>0$, bounded prefix discrepancy and at most $M$ insertions,
+where $M$ is fixed.  Then
+\[
+ \liminf_{\nu\to\infty}\frac{\delta_{\pi_\nu,4}}{N_\nu^3}\ge\frac1{192}.
+\]
+This optimum allows all fixed periods and positive limiting aspects, but
+is not asserted over arbitrary permutations.
+\end{theorem}
+
+\begin{proof}
+The dimension search gives $a/b\to1$ and $r/b\to3-\sqrt5$.
+By Lemmas~\ref{lem:midpoint-quadrature} and~\ref{lem:oriented-leading}, the
+row term vanishes; \eqref{eq:interior-correction} gives, for both parities,
+\[
+ L_\tau=\frac{h^{1/4}_\tau(1)}{96}
+       +\frac1{2304}\sum_{i=1}^4 C_{i,\tau(i)}.
+\]
+Substitution in the local formula gives the following complete ledger:
+\[
+\begin{array}{c|l}
+2304L_\tau&\tau\\\hline
+-12&1243,1324,2143,3412,4231\\
+-8&4321\\
+-4&2341,3421,4123,4312\\
+0&1234,1432,2314,2431,3124,3214,4132\\
+12&1342,1423,2134,2413,3142,3241,4213
+\end{array}
+\]
+The limiting maximum is $12/2304=1/192$.
+
+For optimality, define the ten-pattern functional
+\[
+\begin{split}
+16\mathcal W(z)={}&-2z_{1243}+2z_{1342}+2z_{1423}+2z_{2134}-z_{2143}\\
+ &+z_{2413}+z_{3142}+2z_{3241}-z_{3412}+2z_{4213}.
+\end{split}
+\]
+Its coefficient $\ell_1$ norm is $1$, and every position--value pair has
+coefficient sum $1/8$.  Hence it annihilates assignment sums of total-sum-zero
+matrices, including the centred row and insertion corrections.  Directly,
+\[
+ \mathcal W(1)=\tfrac12,\quad
+ \mathcal W(T_x)=\mathcal W(T_y)=\tfrac34,\quad
+ \mathcal W(S)=\tfrac18,\quad\mathcal W(U)=\tfrac14.
+\]
+Thus \eqref{eq:oriented-h} gives
+\[
+ \mathcal W((h^\eta_\tau(\theta))_\tau)
+ =\frac13+\frac{\theta+\theta^{-1}}{12}\ge\frac12,
+\]
+independently of $\eta$.  Lemma~\ref{lem:oriented-leading} and
+$\|\mathcal W\|_1=1$ give the lower bound $1/(2\cdot96)=1/192$.
+The ledger attains this bound.
+\end{proof}

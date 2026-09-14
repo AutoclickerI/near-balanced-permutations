@@ -1,0 +1,1391 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{cmap}
+\usepackage[english]{babel}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+ pdftitle={Near-Balanced Permutations at Every Size},
+ pdfauthor={Seonghyeon Bak; Jihoon Kim; Geonwoo Kim; Woojun Jeong},
+ pdfsubject={Explicit permutation-pattern discrepancy and exact rectangular profiles},
+ pdfkeywords={permutation patterns, balanced permutations, profile discrepancy, explicit construction}
+}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Ssym}{\mathfrak S}
+\newcommand{\cB}{\mathcal B}
+\title{Near-Balanced Permutations at Every Size}
+\author{%
+ Seonghyeon Bak\textsuperscript{1,\ensuremath{\dagger}}\quad
+ Jihoon Kim\textsuperscript{2,\ensuremath{\dagger},*}\quad
+ Geonwoo Kim\textsuperscript{3,\ensuremath{\ddagger}}\quad
+ Woojun Jeong\textsuperscript{4,\ensuremath{\ddagger}}
+}
+\date{}
+\begin{document}
+\maketitle
+\begingroup
+\renewcommand{\thefootnote}{}
+\begin{NoHyper}
+\footnotetext{%
+\textsuperscript{1}\,Department of Computer Science and Engineering,
+Seoul National University, Seoul, Republic of Korea.\\
+\textsuperscript{2}\,CAPP Lab, Department of Electrical and Computer Engineering,
+Seoul National University, Seoul, Republic of Korea.\\
+\textsuperscript{3}\,School of Undergraduate Studies,
+Daegu Gyeongbuk Institute of Science and Technology, Daegu 42988, Republic of Korea.\\
+\textsuperscript{4}\,Kyonggi University, Republic of Korea.\\
+Seonghyeon Bak: \texttt{coshaman@snu.ac.kr};
+Jihoon Kim: \texttt{jihoon@capp.snu.ac.kr}.\\
+Geonwoo Kim: \texttt{koi@dgist.ac.kr};
+Woojun Jeong: \texttt{jwj7140@gmail.com}.\\
+\textsuperscript{\ensuremath{\dagger}}\,Seonghyeon Bak and Jihoon Kim contributed equally.\quad
+\textsuperscript{\ensuremath{\ddagger}}\,Geonwoo Kim and Woojun Jeong contributed equally.\\
+\textsuperscript{*}\,Corresponding author: Jihoon Kim.
+}
+\end{NoHyper}
+\addtocounter{footnote}{-1}
+\endgroup
+
+\begin{abstract}
+For $\pi\in\mathfrak S_N$, let $\delta_{\pi,k}$ be the largest deviation
+of a length-$k$ pattern count from $\binom Nk/k!$, and let $\delta_k(N)$
+be its minimum over $\mathfrak S_N$. Beniamini, Lavee, and Linial proved
+$\delta_k(N)=\Omega_k(N^{k-1})$ for fixed $k\ge4$ and asked whether this
+exponent is sharp for larger $k$. We construct an explicit family
+$(\Pi_N)$, independent of $k$, with
+$\delta_{\Pi_N,k}<14k^3N^{k-1}/(3k!)$ for all $2\le k\le N$.
+Thus $\delta_k(N)=\Theta_k(N^{k-1})$ for every fixed $k\ge4$.
+We also determine the sharp growing-pattern range of this family:
+relative profile-density balance holds if and only if $k=o(N^{1/3})$.
+At $k\sim cN^{1/3}$ the increasing pattern has relative density
+$e^{-c^3/6}$. The construction completes a signed two-sheet rectangle
+by a mechanical partial row; the proofs isolate connected coordinate
+collisions after cancelling the contributions of isolated pairs.
+Exact rectangular profiles also identify the leading discrepancy removable
+by bounded-prefix rows and bounded insertions. For each fixed $k\ge4$
+and aspect $\theta>0$, a nonconstructive realization theorem attains the
+standard-sheet LP distance $q_k(\theta)/[2k!(k-2)!]$. Certificates determine
+optimal aspects for $k=4,\ldots,8$, including a nonsquare optimum at $k=6$.
+A separate explicit family with periodic row orientations and $12$ or $17$
+insertions attains four-pattern constant $1/192$, matching a lower bound
+within that completion class, not over arbitrary permutations.
+\end{abstract}
+
+\noindent\textbf{Keywords.} permutation patterns; balanced permutations;
+profile discrepancy; explicit construction; Erd\H{o}s--Szekeres permutation.
+
+\noindent\textbf{2020 Mathematics Subject Classification.}
+Primary 05A05; Secondary 05D99.
+
+\section{Introduction}
+
+For pairwise distinct real numbers $z_1,\ldots,z_k$, let
+$\operatorname{st}(z_1,\ldots,z_k)\in\Ssym_k$ be the permutation that
+records their relative order.  If $\pi\in\Ssym_N$ and
+$i_1<\cdots<i_k$, the induced pattern is
+$\operatorname{st}(\pi(i_1),\ldots,\pi(i_k))$.  Write $\#_\tau(\pi)$
+for the number of $k$-subsets of positions inducing $\tau\in\Ssym_k$.
+For example, $\operatorname{st}(4,1,3)=312$.
+The $k$-profile of $\pi$ is the vector of these $k!$ counts.  We study
+\[
+ \delta_{\pi,k}=
+ \max_{\tau\in\Ssym_k}\left|\#_\tau(\pi)-\frac1{k!}\binom Nk\right|,
+ \qquad
+ \delta_k(N)=\min_{\pi\in\Ssym_N}\delta_{\pi,k}.
+\]
+Thus $\pi$ is $k$-balanced precisely when $\delta_{\pi,k}=0$.
+
+A uniformly random permutation has expected profile $\binom Nk/k!$, while
+quasirandom permutation sequences approach these densities asymptotically
+\cite{Cooper,KralPikhurko}. Related frameworks include permutation limits
+\cite{HoppenEtAl} and asymptotic profile symmetry \cite{CooperPetrarca}.
+Here the objective is a finite, simultaneous $\ell_\infty$
+approximation to the uniform profile.  Joy Cooper and Dukes
+\cite[equation~(1.2)]{CooperDukesFuzzy} define the fuzzy lift
+$P_\sigma^{\uparrow n}$ as a normalized sum of order-preserving embedding
+matrices.  They study rational combinations of these lifts that are constant
+matrices.  The same binomial weights appear in our insertion expansion,
+but those formal identities do not provide the every-size discrepancy bound
+proved here: we realize centred corrections by unweighted points in one
+permutation.
+Exact balance is exceptionally rigid.  Beniamini, Lavee, and Linial
+proved that no permutation is $4$-balanced and obtained the lower bound
+$\delta_k(N)=\Omega_k(N^{k-1})$ for every fixed $k\ge4$
+\cite[Theorems~6 and 7]{BLL}.  Their two-sided Erd\H{o}s--Szekeres
+construction matches this order for $k=4$ along orders $2m^2$, but the
+sharp exponent for each fixed $k>4$ was left open.
+An explicit all-size baseline follows from Cooper's estimate
+\cite[Theorem~3.1 and the proof of Proposition~3.4]{Cooper}:
+for every fixed $k\ge2$, every $N>k$, and every $\pi\in\Ssym_N$,
+\[
+ \delta_{\pi,k}\le C_kD(\pi)N^{k-1},\qquad
+ D(\pi):=\max_{\substack{I,J\subseteq[N]\\ I,J\text{ intervals}}}
+ \left|\#\bigl(\pi(I)\cap J\bigr)-\frac{|I||J|}{N}\right|,
+\]
+Here intervals are nonwrapping; $D_{\rm cyc}$ denotes the same maximum
+over cyclic intervals in $\mathbb Z_N$.  Splitting each cyclic interval into
+at most two nonwrapping intervals gives $D_{\rm cyc}\le4D$.
+Cooper's decoupling estimate is $O_k((D_{\rm cyc}+1)N^{k-1})$.
+Taking $I=[N-1]$ and $J=\{\pi(N)\}$ gives $D\ge(N-1)/N$,
+which absorbs the additive $1$ and yields the displayed finite bound.  The S\'os permutation
+$\sigma_N^{(\alpha)}$ ranking the fractional parts $\{\alpha\},\ldots,\{N\alpha\}$, with
+$\alpha=(\sqrt5-1)/2$, has $D(\sigma_N^{(\alpha)})=O_\alpha(\log N)$
+\cite[Theorem~3.24]{CooperArithmetic}.  Hence
+$\delta_{\sigma_N^{(\alpha)},k}=O_{k,\alpha}(N^{k-1}\log N)$ at every size.
+The issue is to remove this logarithm while retaining all patterns and
+all permutation sizes.
+
+Throughout, $N$ denotes permutation size and $k$ denotes pattern length.
+
+\begin{theorem}\label{thm:main}
+There is an explicit family $(\Pi_N)_{N\ge1}$, independent of $k$, with the
+following properties.
+\textup{(i)} For all $2\le k\le N$,
+\[
+ \delta_{\Pi_N,k}<\frac{14k^3}{3k!}N^{k-1}.
+\]
+Consequently $\delta_k(N)=\Theta_k(N^{k-1})$ for every fixed $k\ge4$.
+\par\noindent\textup{(ii)} For $2\le k=k(N)\le N$, relative profile-density balance
+\[
+ \max_{\tau\in\Ssym_k}
+ \left|\frac{k!\,\#_\tau(\Pi_N)}{\binom Nk}-1\right|\longrightarrow0
+\]
+holds if and only if $k=o(N^{1/3})$. If $k/N^{1/3}\to c\in[0,\infty)$,
+the increasing pattern has relative density tending to $e^{-c^3/6}$;
+if $k/N^{1/3}\to\infty$, its relative density tends to zero.
+\end{theorem}
+
+Theorem~\ref{thm:main} closes the fixed-$k$ exponent question of
+Beniamini--Lavee--Linial and removes the logarithm from Cooper's all-size
+comparison. Part (ii) determines exactly when this family approximates
+every shrinking target $1/k!$ relatively.
+Its threshold is specific to $\Pi_N$, not a bound for all permutation families.
+
+The complete two-sheet rectangle is inherited from \cite{BLL}.  The
+obstacle to an every-size construction is its boundary: filling a gap of
+$O(\sqrt N)$ points can affect $\Theta_k(N^{k-1/2})$ subsets, more than the
+allowed discrepancy.  We use a partial row whose columns form a mechanical
+word.  Sign reversal makes isolated coordinate-tie resolutions unbiased;
+a coupling to independent tie-breaking leaves only interacting collisions.
+Prefix balance then controls the centred profile of the large clean boundary
+class, rather than bounding its cardinality.  One northeast point handles
+odd sizes. This proves part (i) in
+Sections~\ref{sec:construction}--\ref{sec:odd-orders}.
+
+The questions of pattern growth and removable leading error are linked by
+the exact rectangle formula in Section~\ref{sec:rectangles}. A connected
+collision expansion cancels arbitrary collections of isolated pairs and
+bounds the remaining relative error by $O(k^3/N)$ on complete squares.
+An exact increasing-pattern count gives the matching obstruction at
+$k\asymp N^{1/3}$. The same formula identifies three local statistics
+that describe the fixed-$k$ leading vector.
+
+Section~\ref{sec:sharp-four} turns that vector into a completion optimum.
+A bounded-prefix row contributes a term depending only on the final pattern
+value, and boundedly many insertions contribute sums over position--value
+pairs.  We prove that every bounded centred correction of this additive
+form can be realized.  The remaining discrepancy is therefore exactly the
+$\ell_\infty$ distance $q_k(\theta)$ of the core vector from the additive
+subspace, with normalization $2k!(k-2)!$.  Exact certificates show that square
+aspect is optimal in this class for $k=4,5,7,8$, but not for $k=6$: its
+minimizing aspects are $2-2\sqrt3/3$ and its reciprocal.  Its family $\Xi_N^{(k,\theta)}$ is nonconstructive and may depend on both
+fixed parameters, unlike $\Pi_N$.
+
+The completion class matters even for $k=4$.  Its standard-orientation
+optimum is $1/144$, but periodically reversing rows adds a local bond term to
+the core vector.  We exploit it to construct a separate explicit family
+$(\Sigma_N)$ with $12$ or $17$ insertions and discrepancy
+$N^3/192+o(N^3)$.  A ten-pattern functional annihilates centred additive
+corrections and proves optimality over all fixed-period orientations and
+positive limiting aspects in the stated completion framework.  No constant
+optimum here is asserted over arbitrary permutations.
+\section{The every-size construction}\label{sec:construction}
+
+Write $[s]=\{1,\ldots,s\}$ and compare tuple-valued keys
+lexicographically.  For even size, write $N=2E$ and set
+\[
+ a=\lfloor\sqrt E\rfloor,
+ \qquad b=\left\lfloor\frac Ea\right\rfloor,
+ \qquad r=E-ab.
+\]
+Then
+\begin{equation}\label{eq:shape}
+ 0\leq r<a,
+ \qquad a\leq b\leq a+2.
+\end{equation}
+If $r>0$, define
+\[
+ R=R_{b,r}
+   =\left\{\left\lceil\frac{jb}{r}\right\rceil:1\leq j\leq r\right\}
+   \subseteq[b];
+\]
+When $r>0$, \eqref{eq:shape} gives $b/r>1$, so the $r$ ceiling values
+are distinct and $|R|=r$.  Put $R=\varnothing$ when $r=0$.  Our cell set is
+\[
+ F_E=([a]\times[b])\,\cup\,(\{a+1\}\times R),
+\]
+which has exactly $E$ cells.  The first rectangle is the \emph{core};
+the cells in the last row are \emph{partial}.
+For example, $E=7$ gives $(a,b,r)=(2,3,1)$, $R=\{3\}$, and hence a
+$2\times3$ core together with the single partial cell $(3,3)$.
+
+Place two coloured points above each cell:
+\[
+ Q_E=F_E\times\{-1,+1\}.
+\]
+For $p=(x,y,c)$, order these $2E$ points by the two injective keys
+\begin{align}
+ K_X(p)&=(x,-cy,c),
+ &K_Y(p)&=(y,cx,c).                         \label{eq:keys}
+\end{align}
+Listing the points in $K_X$-order and recording their ranks in
+$K_Y$-order defines $\Pi_{2E}\in\Ssym_{2E}$.  More generally, for any
+finite cell set $F\subset\mathbb Z^2$, write $\Pi(F)$ for the permutation
+of $F\times\{-1,+1\}$ induced by these same two key orders.  The final
+coordinate keeps both keys injective even at zero or negative coordinates;
+the rotation interpretation below concerns the positive-coordinate set $F_E$.
+For the preceding $E=7$ example this gives
+\[
+ \Pi_{14}=(12,7,3,2,6,11,13,8,4,1,5,10,14,9).
+\]
+
+On the positive-coordinate set $F_E$, the final coordinate is redundant.
+Here the two orders also have an exact geometric realization.  Put $M=\max\{a+1,b\}$ and choose
+$0<\varepsilon<\arctan(1/(2M))$.  Rotate the copy of
+colour $c$ through angle $c\varepsilon$; its coordinates become
+\[
+ (x\cos\varepsilon-cy\sin\varepsilon,\quad
+  y\cos\varepsilon+cx\sin\varepsilon).
+\]
+A unit difference between original $x$-coordinates contributes
+$\cos\varepsilon$, while the perturbation difference has magnitude at
+most $2b\sin\varepsilon$; hence unequal $x$-coordinates keep their
+order.  The analogous bound $2(a+1)\sin\varepsilon$ handles unequal
+$y$-coordinates.  Original ties are resolved by $-cy$ and $cx$.
+Therefore the rotated coordinate orders are precisely
+\eqref{eq:keys}.  We write
+$\mathrm{ES}^{\pm}(a,b):=\Pi([a]\times[b])$ for this complete-core
+permutation.  It is Beniamini--Lavee--Linial's sufficiently-small-angle order
+type; if $r=0$, it is the whole construction \cite[Definition~5.6]{BLL}.
+
+\begin{figure}[t]
+\centering
+\setlength{\unitlength}{1pt}
+\begin{picture}(440,128)
+  \put(0,116){\makebox(170,8){\small (a) two sheets over a partial rectangle}}
+  \put(18,16){\line(1,0){62}}
+  \put(18,16){\line(0,1){76}}
+  \put(80,16){\line(0,1){76}}
+  \put(18,92){\line(1,0){62}}
+  \put(34,28){\circle*{3}} \put(40,22){\circle{4}}
+  \put(64,28){\circle*{3}} \put(70,22){\circle{4}}
+  \put(34,53){\circle*{3}} \put(40,47){\circle{4}}
+  \put(64,53){\circle*{3}} \put(70,47){\circle{4}}
+  \put(34,78){\circle*{3}} \put(40,72){\circle{4}}
+  \put(64,78){\circle*{3}} \put(70,72){\circle{4}}
+  \put(94,78){\circle*{3}} \put(100,72){\circle{4}}
+  \multiput(97,61)(0,5){8}{\line(0,1){2}}
+  \put(30,4){\makebox(40,8){\scriptsize $[a]\times[b]$ core}}
+  \put(84,50){\makebox(36,8){\scriptsize partial row}}
+  \put(5,94){\makebox(18,8){\scriptsize $y$}}
+  \put(82,8){\makebox(18,8){\scriptsize $x$}}
+  \put(18,104){\circle*{3}} \put(23,100){\makebox(38,8)[l]{\scriptsize $c=+1$}}
+  \put(84,104){\circle{4}} \put(89,100){\makebox(38,8)[l]{\scriptsize $c=-1$}}
+
+  \put(172,116){\makebox(268,8){\small (b) cancellation hierarchy}}
+  \put(190,92){\makebox(70,8){\scriptsize collision-free}}
+  \put(207,66){\circle*{3}} \put(219,78){\circle{4}}
+  \put(232,58){\circle*{3}} \put(247,88){\circle{4}}
+  \put(190,40){\makebox(70,8){\scriptsize pattern-uniform}}
+
+  \put(274,92){\makebox(78,8){\scriptsize isolated $x$-pair}}
+  \put(298,61){\circle*{3}} \put(298,82){\circle{4}}
+  \put(298,63){\line(0,1){17}}
+  \put(318,55){\circle*{3}} \put(337,88){\circle{4}}
+  \put(270,40){\makebox(88,8){\scriptsize uniform after colours}}
+
+  \put(366,92){\makebox(66,8){\scriptsize interacting wedge}}
+  \put(386,70){\circle*{4}} \put(386,88){\circle{4}}
+  \put(408,70){\circle*{3}}
+  \put(386,72){\line(0,1){14}} \put(388,70){\line(1,0){18}}
+  \put(362,40){\makebox(76,8){\scriptsize discrepancy source}}
+  \put(186,19){\makebox(245,10){\scriptsize coordinate equalities are shown by line segments}}
+\end{picture}
+% Alt text: a two-by-three core plus one partial cell, with two signed
+% points over each cell, followed by collision-free, isolated-pair, and
+% interacting-wedge configurations illustrating the cancellation hierarchy.
+\caption{Construction and cancellation mechanism.  (a) The case $E=7$:
+a $2\times3$ core and one partial cell, with a positive (filled) and
+negative (open) point over each cell.  The keys in \eqref{eq:keys} are the
+coordinate orders after opposite small rotations of the two sheets.
+(b) Collision-free classes and isolated same-axis pairs are exactly
+pattern-uniform after summing colours (Lemma~\ref{lem:core-uniform}); only
+interacting equalities, such as the displayed wedge, enter the discrepancy
+bound.}
+\label{fig:construction}
+\end{figure}
+
+For odd $N>1$, obtain $\Pi_N$ from $\Pi_{N-1}$ by appending a point that
+is both rightmost and highest.  Let $\Pi_1$ be the unique permutation of
+size one.
+
+\section{A balanced partial row}
+
+The set $R$ distributes its $r$ columns evenly through $[b]$.
+
+\begin{lemma}[prefix balance]\label{lem:prefix}
+For every integer $0\leq z\leq b$,
+\[
+ |R\cap[z]|=\left\lfloor\frac{rz}{b}\right\rfloor.
+\]
+In particular, if $d_y=\mathbf1_R(y)-r/b$, then
+\[
+ \left|\sum_{y=1}^z d_y\right|<1
+ \quad (0\leq z<b),
+ \qquad
+ \sum_{y=1}^b d_y=0.
+\]
+\end{lemma}
+
+\begin{proof}
+For $r>0$, the inequality $\lceil jb/r\rceil\leq z$ is equivalent to
+$j\leq rz/b$.  Counting the eligible integers $j$ gives the formula.
+The case $r=0$ is immediate.
+\end{proof}
+
+\begin{lemma}[integrated mechanical discrepancy]\label{lem:mechanical-earthmover}
+For $0\leq r<b$, the mechanical row satisfies
+\[
+ W(R):=\sum_{z=1}^{b-1}
+ \left||R\cap[z]|-\frac{rz}{b}\right|
+ =\frac{b-\gcd(b,r)}2\leq\frac{b-1}2.
+\]
+\end{lemma}
+
+\begin{proof}
+Lemma~\ref{lem:prefix} makes the $z$th summand the fractional part
+$\{rz/b\}$.  If $g=\gcd(b,r)$, the nonzero residues of $rz$ modulo $b$
+consist of each of $g,2g,\ldots,b-g$ repeated $g$ times.  Their normalized
+sum is $(b-g)/2$.
+\end{proof}
+
+For $1\leq t\leq k$ and $1\leq y\leq b$, use the convention that an
+out-of-range binomial coefficient is zero and put
+\[
+ f_t(y)=\binom{y-1}{t-1}\binom{b-y}{k-t}.
+\]
+This counts the $(k-1)$-subsets of $[b]\setminus\{y\}$ in which $y$ has
+rank $t$ after it is inserted.
+
+\begin{lemma}[rank balance]\label{lem:rank-balance}
+For the mechanical row $R$,
+\begin{equation}\label{eq:rank-balance}
+ \left|\sum_{y\in R} f_t(y)-\frac rb\binom bk\right|
+ \leq\binom{b-1}{k-1}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Vandermonde gives $\sum_y f_t(y)=\binom bk$.
+Put $g_y={\bf1}_R(y)-r/b$ and $G_z=\sum_{y\le z}g_y$.
+Lemma~\ref{lem:prefix} gives $-1<G_z\le0$ and $G_b=0$.
+The nonnegative weight $f_t$ is unimodal: where adjacent terms are positive,
+$f_t(y+1)/f_t(y)=y(b-y-k+t)/((y-t+1)(b-y))$ is at least one exactly when
+$y\le(t-1)b/(k-1)$. Also $f_t(y)\le\binom{b-1}{k-1}$, since it counts
+only the $(k-1)$-subsets avoiding $y$ that put $y$ at rank $t$.
+In $\sum_y g_yf_t(y)=-\sum_{z<b}G_z(f_t(z+1)-f_t(z))$,
+the total increase and total decrease are each bounded by this
+maximum, and $0\le-G_z<1$. This proves the claim, including $r=0$.
+\end{proof}
+
+\section{Exact cancellation in the core}
+
+Consider first the coloured complete rectangle
+$[a]\times[b]\times\{-1,+1\}$ with the orders
+\eqref{eq:keys}.  For a $k$-subset $S$, let $r_x(S)$ and $r_y(S)$ be
+the numbers of distinct $x$- and $y$-coordinates, and define its
+\emph{collision defect}
+\[
+ d(S)=(k-r_x(S))+(k-r_y(S)).
+\]
+The three configurations in Figure~\ref{fig:construction}(b) explain the
+threshold.  If all coordinates are distinct, every one of the $2^k$ colour
+words gives the same two strict coordinate orders.  If exactly one
+$x$-coordinate is repeated while all ordinates are distinct, then for any
+prescribed pattern the coordinate assignment is forced; exactly two of the
+four colour pairs resolve the tied pair in the required order, and the other
+$k-2$ colours are free, giving $2^{k-1}$ realizations of every pattern.  If an
+$x$-tie and a $y$-tie share a point, its single colour must satisfy two local
+resolutions, which may agree or conflict.  These interacting equalities are
+the first classes that need an estimate.
+
+\begin{lemma}[same-axis pair-collision cancellation]
+\label{lem:core-uniform}
+In the complete rectangle, fix an $x$-coordinate multiset and a set of
+distinct $y$-coordinates.  Every pattern occurs equally often among the
+corresponding coloured subsets if every $x$-multiplicity is at most two.
+Symmetrically, the same holds
+for a fixed set of distinct $x$-coordinates and a fixed $y$-coordinate
+multiset whose multiplicities are at most two.  In particular, the
+layers $d=0$ and $d=1$ separately have equal counts for all patterns.
+\end{lemma}
+
+\begin{proof}
+Suppose the $x$-multiset has $q$ repeated pairs and all ordinates are
+distinct.  The pairs occupy disjoint adjacent $X$-blocks.  A prescribed
+pattern fixes the unordered ordinate pair in each block and the ordinate
+of each singleton, hence the uncoloured cell set.  Reversing both colours
+negates the two distinct tie keys $(-cy,c)$ and reverses their comparison,
+so either resolution has exactly two colour choices.  The $q$ pairs use
+disjoint colour variables and the $k-2q$ singleton colours are free.
+Thus exactly $2^q2^{k-2q}=2^{k-q}$ colourings realize each pattern.
+Exchange axes and use $(cx,c)$ for the other assertion.  Summing over
+coordinate choices proves uniformity; $q=0$ and $q=1$ give the stated
+defect layers.
+\end{proof}
+
+The following transfer statement does not require a rectangle or positive
+coordinates.  For a finite cell set $F\subset\mathbb Z^2$, put $E=|F|$.  Write $r_x$ and $c_y$ for its
+row and column degrees, and set
+\[
+ R_3=\sum_xr_x^3,\qquad C_3=\sum_yc_y^3,
+ \qquad M_{11}=\sum_{(x,y)\in F}r_xc_y.
+\]
+For a vector indexed by $\Ssym_k$, let $\|\cdot\|_{\rm cen}$ denote
+maximum distance from its coordinate average.
+
+\begin{lemma}[independent-jitter transfer]\label{lem:jitter}
+Let $P_F$ be the $k$-profile vector of $\Pi(F)$.  For each ordered
+cell tuple $z\in F^k$, independently refine every equality class of its
+$x$- and $y$-coordinates by a uniform label order, and let
+$q_z(\tau)$ be the probability that the two refined orders induce
+$\tau$.  Define the unnormalized jitter-mass vector by
+\[
+ J_F(\tau)=2^k\sum_{z\in F^k}q_z(\tau).
+\]
+Then
+\[
+ \|k!P_F-J_F\|_{\rm cen}\leq 2^k I_k(F),
+ \tag{4.1}\label{eq:jitter-transfer}
+\]
+where, for $k\geq3$,
+\[
+ I_k(F)=\binom{k}{3}(R_3+C_3)E^{k-3}
+ +k(k-1)(k-2)M_{11}E^{k-3}
+ +\binom{k}{2}E^{k-1}.
+ \tag{4.2}\label{eq:interaction-moment}
+\]
+For $k=2$, the right side of \eqref{eq:jitter-transfer} is interpreted
+with $I_2(F)=E$.
+\end{lemma}
+
+\begin{proof}
+For $z=(z_1,\ldots,z_k)\in F^k$ and
+$c=(c_1,\ldots,c_k)\in\{-1,+1\}^k$, let
+$\operatorname{pat}(z,c)$ be the pattern induced by the
+$K_X$- and $K_Y$-orders of the labelled signed points
+$p_i=(z_i,c_i)$ when they are pairwise distinct.
+\[
+ A_z(\tau)=\sum_{c\in\{-1,+1\}^k}
+ {\bf1}\{p_1,\ldots,p_k\text{ are distinct and }
+             \operatorname{pat}(z,c)=\tau\},
+ \qquad B_z(\tau)=2^kq_z(\tau).
+\]
+Every coloured $k$-subset is represented by its $k!$ label orders, while
+$q_z$ is a probability vector.  Thus, componentwise,
+\[
+ k!P_F=\sum_{z\in F^k}A_z,
+ \qquad J_F=\sum_{z\in F^k}B_z.
+\]
+
+Join two labels when their cells have the same $x$-coordinate or the same
+$y$-coordinate.  Call $z$ good when this union graph is a matching and no
+two labels occupy the same cell.  If the graph has $m$ edges, every choice
+of its $m$ independent jitter resolutions has probability $2^{-m}$.  We
+spell out the corresponding colour count.  On an $x$-edge $\{i,j\}$ the
+ordinates are distinct, so the relative $Y$-order is already fixed.
+The tie keys are $u_i=(-c_i y_i,c_i)$ and $u_j=(-c_j y_j,c_j)$.
+They are distinct: equality would force $c_i=c_j$ and then $y_i=y_j$.
+The fixed-point-free involution $(c_i,c_j)\mapsto(-c_i,-c_j)$ sends
+$(u_i,u_j)$ to $(-u_i,-u_j)$, reversing their strict lexicographic
+comparison.  It therefore pairs each resolution with its opposite, so
+exactly two of the four colour pairs realize either order.  This argument
+includes negative and zero ordinates and ties in the first key component.
+On a $y$-edge, the distinct abscissae give the identical argument for
+$(c_i x_i,c_i)$ and $(c_j x_j,c_j)$.  Because the union graph is a matching, these
+edge constraints use disjoint colour variables; because repeated cells are
+excluded, no edge is simultaneously an $x$- and a $y$-edge.  The $k-2m$ singleton colours are free, so each joint resolution has
+$2^m2^{k-2m}=2^{k-m}$ realizing words.  The $2^m$ resolutions partition
+all $2^k$ colour words.  Each has jitter probability $2^{-m}$ and hence
+mass $2^{k-m}$ in $B_z=2^kq_z$ as well.  Thus $A_z=B_z$ for every good $z$.
+
+Disagreement can therefore occur only when an axis contains three chosen
+labels, one label is incident to an $x$-edge and a $y$-edge with different
+neighbours, or a label pair occupies the same cell.  For the first event,
+choose the three responsible labels and the common row (or column), then
+choose their cells and the remaining cells; this gives
+$\binom{k}{3}(R_3+C_3)E^{k-3}$.  For a mixed wedge, choose its ordered
+centre and two neighbours and then its centre cell; the two incident
+choices give $r_xc_y$, hence
+$k(k-1)(k-2)M_{11}E^{k-3}$.  A repeated cell is bounded by choosing its
+label pair, the cell, and the remaining cells, giving
+$\binom{k}{2}E^{k-1}$.  These are union bounds, so overlaps need not be
+subtracted.  For $k=2$, only the repeated-cell event remains.
+
+Finally, if nonnegative vectors $u,v\in\mathbb R^n$ have coordinate sums
+$U,V\le M$, then, coordinate by coordinate,
+\[
+ \left|(u_i-v_i)-\frac{U-V}{n}\right|
+ \le \max\left\{U\left(1-\frac1n\right)+\frac Vn,
+                  V\left(1-\frac1n\right)+\frac Un\right\}
+ \le M.
+\]
+For every bad tuple, $A_z$ and $B_z$ are nonnegative vectors with
+coordinate sums at most $2^k$ (the sum for $B_z$ is exactly $2^k$).
+Taking $n=k!$ and $M=2^k$, then summing over the bad-tuple union bound,
+proves \eqref{eq:jitter-transfer}.
+\end{proof}
+
+For the complete $a\times b$ rectangle, summing over all ordered cell tuples
+is equivalent to choosing the labelled $x$-coordinates independently and
+uniformly from $[a]$, and the labelled $y$-coordinates independently and
+uniformly from $[b]$.  Randomly refining ties therefore makes each global
+order uniform; independence of the coordinate choices and refinements makes
+the two orders independent.  Hence $J_F$ is exactly uniform.  With $A=ab$
+and $\eta=b/a$, Lemma~\ref{lem:jitter} therefore gives
+\begin{equation}
+ \delta_{\Pi([a]\times[b]),k}
+ \leq \frac{2^k}{k!}A^{k-1}K_{k,\eta},
+ \qquad
+ K_{k,\eta}=\binom{k}{3}(\eta+\eta^{-1})
+             +\binom{k}{2}(2k-3).
+ \tag{4.3}\label{eq:jitter-rectangle}
+\end{equation}
+
+\section{Balanced boundary completion}\label{sec:boundary}
+
+We now count subsets that use the partial row.  A subset with at least
+two partial-row points belongs to a family of size at most
+\begin{equation}\label{eq:two-partial}
+ \binom{2r}{2}\binom{2E}{k-2}
+ \leq\frac{2^{k-1}}{(k-2)!}E^{k-1}.
+\end{equation}
+
+Consider a subset with exactly one partial-row point.  In this count a
+\emph{coordinate collision} means equality of original $x$- or $y$-coordinates
+among selected signed points.  The two opposite-colour points over one cell are
+distinct labelled points, but selecting both creates a collision on each axis;
+selecting the same labelled point twice is never allowed.  For $k\geq3$, a
+labelled $(k-1)$-tuple with a repeated coordinate realizes one of
+$J_k=(k-1)(k-2)$ elementary equality events.  For a fixed event there
+are at most $bA^{k-2}$ core cell assignments, since $a\leq b$.
+Dividing by $(k-1)!$, choosing colours and one of the $2r$ partial
+points, and using $rb\leq ab=A$, gives
+\[
+ \frac{2^kJ_k}{(k-1)!}A^{k-1}.
+\]
+This single event count includes repetitions on either axis.  For $k=2$
+this repeated-coordinate subclass is empty.
+There is one additional collision possibility: a core point may share
+the partial point's $y$-coordinate.  A union bound gives at most
+\begin{equation}\label{eq:shared-y}
+ (2r)(2a)\binom{2ab}{k-2}
+ \leq\frac{2^k}{(k-2)!}E^{k-1}
+\end{equation}
+subsets of this kind.  The partial row has a new $x$-coordinate, so
+there is no analogous shared-$x$ case.
+
+It remains to analyze subsets with exactly one partial-row point and no
+coordinate collision.  Their exact number is
+\[
+ 2^k r (k-1)!\binom a{k-1}\binom{b-1}{k-1}.
+\]
+Indeed, choose the signed partial point, the distinct core abscissae, the
+core ordinates other than its ordinate, their bijection, and the $2^{k-1}$
+core colours.  Thus a crude cardinality bound is insufficient: when
+$r\asymp a\asymp b\asymp E^{1/2}$, this class has
+$\Theta_k(E^{k-1/2})$ members.  The next lemma uses the bounded rank
+discrepancy of the mechanical row to show that its \emph{centred profile},
+rather than its size, is only $O_k(E^{k-1})$.
+
+For $k\geq2$, define $m_k=1$ when $k=2$ and $m_k=2$ when $k\geq3$.
+
+\begin{lemma}[clean boundary profile]\label{lem:boundary-profile}
+Let $A_\tau$ be the number of collision-free $k$-subsets that contain
+exactly one partial-row point and induce $\tau$.  If
+$t=\tau(k)$, then
+\begin{equation}\label{eq:A-tau}
+ A_\tau
+ =2^k\binom{a}{k-1}
+   \sum_{y\in R}
+     \binom{y-1}{t-1}\binom{b-y}{k-t}.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:boundary-explicit}
+ \left|A_\tau-\frac1{k!}\sum_{\sigma\in\Ssym_k}A_\sigma\right|
+ \leq2^km_k\binom{a}{k-1}\binom{b-1}{k-1}
+ \leq\frac{2^km_k}{((k-1)!)^2}E^{k-1}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For $k=2$ the argument below has one core point and gives the same formula
+directly, with $m_2=1$.  We therefore treat all $k\geq2$ together.
+The partial row is last in $X$-order.  Fix its ordinate $y\in R$.
+For it to have rank $t$ among the selected ordinates, choose $t-1$
+ordinates below $y$ and $k-t$ above it.  Choose the other $k-1$
+distinct abscissae from the $a$ core rows.  Once these coordinate sets
+and a pattern $\tau$ with $\tau(k)=t$ are fixed, $\tau$ specifies a
+unique bijection from the core abscissae to the non-special ordinates.
+There are no ties, so all $2^k$ colourings induce the same pattern.
+This proves \eqref{eq:A-tau}.
+
+Write the sum in Lemma~\ref{lem:rank-balance} as
+$r\binom bk/b+e_t$, where
+$|e_t|\leq\binom{b-1}{k-1}\leq m_k\binom{b-1}{k-1}$.
+Moreover, $\sum_t f_t(y)=\binom{b-1}{k-1}$, and Vandermonde's identity
+also gives $k\binom bk/b=\binom{b-1}{k-1}$.  Hence
+$\sum_{t=1}^k e_t=0$.  Each final rank occurs for exactly $(k-1)!$
+patterns, so the class average has zero error term.  Multiplying the
+bound on $e_t$ by $2^k\binom{a}{k-1}$ proves
+\eqref{eq:boundary-explicit}.
+\end{proof}
+
+Put
+\[
+ \beta_k=1-\frac1{k!},\qquad J_k=(k-1)(k-2),
+\]
+and, for $\rho\geq1$, define
+\begin{equation}\label{eq:C-rho}
+ \begin{aligned}
+ C_\rho(k)={}&\frac{2m_k}{((k-1)!)^2}
+ +\frac{2K_{k,\rho}}{k!}\\
+ &+\beta_k\left(
+   \frac{2J_k}{(k-1)!}
+  +\frac3{(k-2)!}\right)
+  +\frac{\beta_k}{(k-1)!},\\
+ K_{k,\rho}={}&\binom{k}{3}(\rho+\rho^{-1})
+                 +\binom{k}{2}(2k-3).
+ \end{aligned}
+\end{equation}
+The last term is reserved for odd padding.
+The binomial convention makes every displayed class
+count valid even when there are too few rows or columns; in particular, the
+complete-core class is simply empty when $k>2ab$.  \begin{proof}[Proof of Theorem~\ref{thm:main} for even $N$]
+If $k>2ab$, the class using only the $2ab$ core points is empty; throughout
+this proof its centred contribution is then interpreted as zero.  Otherwise
+the complete core contributes discrepancy at most
+\eqref{eq:jitter-rectangle}.  The clean one-partial-point class
+contributes at most \eqref{eq:boundary-explicit}.  Put every remaining
+partial-row subset into $\cB$.  Equations
+\eqref{eq:two-partial}--\eqref{eq:shared-y} give, with
+$\rho_E=b/a$,
+\[
+ |\cB|\leq2^{k-1}\left(
+  \frac{2J_k}{(k-1)!}
+  +\frac3{(k-2)!}\right)E^{k-1}.
+\]
+Since the centered contribution of an arbitrary class of size $L$ is at
+most $\beta_kL$, and $N=2E$, the three contributions give
+\[
+ \overline C_E(k)=C_{\rho_E}(k)
+ -{\bf1}_{\{k>2ab\}}\frac{2K_{k,\rho_E}}{k!}
+\]
+and
+\begin{equation}\label{eq:refined-even}
+ \delta_{\Pi_N,k}
+ \leq\left(\overline C_E(k)-\frac{\beta_k}{(k-1)!}\right)N^{k-1}.
+\end{equation}
+To normalize \eqref{eq:C-rho}, use $\beta_k\le1$ and set
+$\eta=\rho+\rho^{-1}$.  The clean term is at most $2/k^2$ after
+multiplication by $k!/k^3$; the bad and reserved terms sum to
+$(2J_k+3(k-1)+1)/k^2=2-3/k+2/k^2$.
+If $k\le2ab$, then $b-a\le2$ gives
+$\eta-2=(b-a)^2/(ab)\le8/k$, and therefore
+\[
+\begin{aligned}
+ \frac{k!}{k^3}C_{\rho_E}(k)
+ &\le\frac{\eta(k-1)(k-2)}{3k^2}
+ +\frac{(k-1)(2k-3)}{k^2}+2-\frac3k+\frac4{k^2}\\
+ &\le\frac{14k^3-22k^2+k+16}{3k^3}<\frac{14}{3}.
+\end{aligned}
+\]
+If $k>2ab$, omit the empty core term.  The remaining normalized sum is
+at most $(2k^2-3k+4)/k^2<14/3$.  Thus
+$\overline C_E(k)<14k^3/(3k!)$ in both cases.
+\end{proof}
+
+\section{Odd orders and completion of the proof}\label{sec:odd-orders}
+
+\begin{lemma}[one-point padding]\label{lem:padding}
+Let $2\leq k\leq M+1$.  Suppose $\pi\in\Ssym_M$ and
+$\pi^+\in\Ssym_{M+1}$ is obtained by appending a
+rightmost-and-highest point.  Write
+\[
+ D_k(\tau)=\#_\tau(\pi)-\frac1{k!}\binom Mk,
+ \qquad
+ D_k^+(\tau)=\#_\tau(\pi^+)-\frac1{k!}\binom{M+1}k,
+ \qquad
+ c_{M,k}=\frac1{k!}\binom M{k-1}.
+\]
+Set $D_{M+1}(\tau)=0$, since $\pi$ has no $(M+1)$-subsets, and
+$D_1(1)=0$.
+If $\tau(k)=k$, let $\tau'$ be obtained by deleting its last entry.  Then
+\begin{equation}\label{eq:odd-recurrence}
+ D_k^+(\tau)=D_k(\tau)+
+ \begin{cases}
+  D_{k-1}(\tau')+(k-1)c_{M,k},&\tau(k)=k,\\
+  -c_{M,k},&\tau(k)\ne k.
+ \end{cases}
+\end{equation}
+With the conventions $\delta_{\pi,1}=\delta_{\pi,M+1}=0$,
+\begin{align}
+ \delta_{\pi^+,k}
+ &\leq \delta_{\pi,k}
+   +\beta_k\binom{M}{k-1},
+ \label{eq:padding-coarse}\\
+ \delta_{\pi^+,k}
+ &\leq \delta_{\pi,k}+\delta_{\pi,k-1}
+   +\frac{k-1}{k!}\binom{M}{k-1}.
+ \label{eq:padding-sharp}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+The number $X_\tau$ of new copies is $\#_{\tau'}(\pi)$ when
+$\tau(k)=k$, and zero otherwise.  Pascal's identity gives
+\eqref{eq:odd-recurrence}.  Centering the range
+$0\le X_\tau\le\binom M{k-1}$ at $c_{M,k}$ gives
+\eqref{eq:padding-coarse}; taking absolute values in the recurrence gives
+\eqref{eq:padding-sharp}.
+\end{proof}
+
+For odd $N\geq k+1$, let $M=N-1$.  Combining
+\eqref{eq:padding-coarse} with the reserved term in the even estimate gives
+the explicit inequality
+\[
+ \delta_{\Pi_N,k}
+ \leq\left(\overline C_E(k)-\frac{\beta_k}{(k-1)!}\right)M^{k-1}
+      +\beta_k\binom{M}{k-1}
+ \leq \overline C_E(k)M^{k-1}
+ \leq \overline C_E(k)N^{k-1}.
+\]
+If $N=k$ is odd, then
+$\delta_{\Pi_k,k}=\beta_k<1$, whereas
+$14k^{k+2}/(3k!)>1$ for $k\ge3$. Thus the same strict global bound holds.
+This proves the bound in Theorem~\ref{thm:main}(i); its fixed-$k$ exponent
+claim follows from Beniamini--Lavee--Linial's lower bound
+\cite[Theorem~7]{BLL}.
+
+\begin{corollary}[absolute-density consequences]\label{cor:growing-coefficient}
+Uniformly over $\tau\in\Ssym_k$ and $2\le k=o(N^{1/2})$,
+\begin{equation}\label{eq:growing-k-absolute}
+ \left|\frac{\#_\tau(\Pi_N)}{\binom Nk}-\frac1{k!}\right|
+ \le\left(\frac{14}{3}+O\left(\frac{k^2}{N}\right)\right)\frac{k^3}{N},
+\end{equation}
+with an absolute implied constant. For $N\ge2k^2+1$, the left side is
+less than $7k^3/N$.
+\end{corollary}
+\begin{proof}
+The product $f_{N,k}=\prod_{j<k}(1-j/N)$ is $1+O(k^2/N)$ in the stated
+range. Divide Theorem~\ref{thm:main}(i) by
+$\binom Nk=(N^k/k!)f_{N,k}$. For the finite bound use
+$f_{N,k}\ge1-k(k-1)/(2N)>3/4$ and $56/9<7$.
+\end{proof}
+
+\section{Exact rectangular profiles and consequences}\label{sec:rectangles}
+
+The exact binomial-basis formula determines the growing-pattern threshold
+and then the local leading vector for fixed $k$.
+
+\subsection{An exact formula in the binomial basis}
+
+The preceding defect argument can be sharpened to an exact formula.  Write
+$\alpha\vDash k$ for a positive composition of $k$, let
+$\ell(\alpha)$ be its number of parts, and let $p_\alpha(i)$ be the
+index of the part containing position $i$.  Thus a composition records
+consecutive equality blocks in an ordered list.
+
+Throughout this section the coordinate sets are $[a]$ and $[b]$, so both
+coordinates are positive. For $\tau\in\Ssym_k$, compositions
+$\alpha,\beta\vDash k$, and $c\in\{-1,+1\}^k$, put
+$p_i=(p_\alpha(i),p_\beta(\tau(i)),c_i)$, with block indices starting at one.
+Let $w_\tau(\alpha,\beta)$ count the colour words for which
+$p_1,\ldots,p_k$ are strictly increasing in $K_X$ and
+$p_{\tau^{-1}(1)},\ldots,p_{\tau^{-1}(k)}$ are strictly increasing in $K_Y$.
+Only comparisons within equal-coordinate blocks require checking.
+
+For example, if $k=2$, $\alpha=(2)$, $\beta=(1,1)$, and $\tau=12$,
+the $Y$-blocks are singletons and the admissible words are $(+,-)$ and
+$(-,-)$; hence $w_{12}((2),(1,1))=2$.
+
+\begin{theorem}[exact rectangular profile]\label{thm:exact-rectangle}
+For every $a,b\geq1$, every $2\leq k\leq2ab$, and every
+$\tau\in\Ssym_k$,
+\begin{equation}\label{eq:exact-rectangle}
+ \#_\tau(\mathrm{ES}^{\pm}(a,b))
+ =\sum_{\alpha,\beta\vDash k}
+   w_\tau(\alpha,\beta)
+   \binom a{\ell(\alpha)}\binom b{\ell(\beta)}.
+\end{equation}
+Thus every rectangular profile entry is an explicit bivariate polynomial
+in $a$ and $b$.
+\end{theorem}
+
+\begin{proof}
+List a selected set as $p_1,\ldots,p_k$ in final $X$-order.  Its equal
+original $x$-coordinates form consecutive blocks, giving a unique
+composition $\alpha$; the equal original $y$-coordinates in final
+$Y$-order similarly give $\beta$.  If the induced pattern is $\tau$,
+then $p_i$ lies in original-coordinate blocks
+$(p_\alpha(i),p_\beta(\tau(i)))$.
+
+Choose the distinct original coordinate values in
+$\binom a{\ell(\alpha)}\binom b{\ell(\beta)}$ ways.  Within an equal-$x$
+block, the key $-cy$ orders all positive colours with decreasing
+$y$-block index, followed by all negative colours with increasing index;
+this is exactly the required $K_X$ order. The key $cx$ gives the
+required $K_Y$ order symmetrically.  Strictness also excludes selecting
+the same coloured point twice.  Hence admissible colour words are in
+bijection with the selected sets having these data, proving
+\eqref{eq:exact-rectangle}.
+
+\end{proof}
+
+\subsection{The sharp growing-pattern range}
+
+The target $1/k!$ is too small for an absolute collision-probability bound
+to give relative balance. We instead retain the exact cancellation of
+disjoint isolated pairs before estimating connected interactions.
+
+\begin{lemma}[connected collision bound]\label{lem:connected-collisions}
+Put $s=\min(a,b)$ and $n=2ab$. For $2\le k$ and $64k<s$, uniformly over
+$\tau\in\Ssym_k$,
+\begin{equation}\label{eq:connected-bound}
+ \left|\frac{k!\,\#_\tau(\mathrm{ES}^{\pm}(a,b))}{\binom nk}-1\right|
+ \le\exp\left(\frac{4096k^3}{s^2(1-64k/s)}
+              +\frac{k(k-1)}{2(n-k+1)}\right)-1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Fix $\tau$ and set $\rho=\tau^{-1}$. Form a multigraph on $[k]$ with
+$X$-edges $(i,i+1)$ and $Y$-edges $(\rho(j),\rho(j+1))$, retaining
+parallel edges. A selected edge set $S$ specifies equality compositions
+$\alpha,\beta$ on the two axes. Put
+\[
+ F(S)=\prod_i\alpha_i!\prod_j\beta_j!,\qquad
+ W(S)=2^{-k}w_\tau(\alpha,\beta)F(S).
+\]
+Let $\mathsf S$ be the equality mask of two independent sorted samples of
+$k$ uniform variables from $[a]$ and $[b]$. A composition $\alpha$ on the
+first axis has probability $\binom a{\ell(\alpha)}k!/(a^k\prod_i\alpha_i!)$.
+Thus \eqref{eq:exact-rectangle} gives the exact identity
+\begin{equation}\label{eq:collision-expectation}
+ \mathbb EW(\mathsf S)=\frac{(k!)^2\#_\tau(\mathrm{ES}^{\pm}(a,b))}{n^k}.
+\end{equation}
+
+The weight $W(S)$ factors over the connected components of $S$. Each
+constraint uses the endpoint colours and the relative order or equality
+of their opposite-coordinate blocks. That equality forces the connecting
+monochromatic path into the same component, so changing blocks outside it
+does not alter the constraint. This also covers repeated cells; parallel
+edges are one possible connected interaction, not independent factors.
+Isolated vertices have weight one. Moreover $W(\varnothing)=W(\{e\})=1$,
+by the two-versus-two tie count.
+
+Define $c(T)=\sum_{U\subseteq T}(-1)^{|T|-|U|}W(U)$, so
+$W(S)=\sum_{T\subseteq S}c(T)$. Factoring the Boolean sum over components
+shows that $c(T)$ is their coefficient product. A component consisting of
+one edge therefore makes $c(T)=0$. For a component with $d$ edges,
+$0\le W(U)\le F(U)\le F(T)$ for every $U\subseteq T$: splitting a block
+can only decrease its factorial product. Consequently
+$|c(T)|\le2^dF(T)$, also after multiplying over components.
+
+To control the equality events jointly, realize each discrete sample by
+$1+\lfloor aU_i\rfloor$ with independent continuous uniform $U_i$.
+An $X$-run of $r$ vertices forces its $r-1$ intervening order-statistic
+gaps to have sum at most $1/a$. Distinct runs use disjoint gaps. The joint
+density of any $d_X$ gaps is
+$(k)_{d_X}(1-\sum z_i)^{k-d_X}\le(k)_{d_X}$ on its simplex. Hence
+\[
+ \mathbb P(T_X\subseteq\mathsf S)
+ \le\frac{(k)_{d_X}a^{-d_X}}{\prod_{X\text{-runs}}(r-1)!},
+\]
+where $(k)_d=k!/(k-d)!$. This is a joint bound, not an independence
+assumption between runs. Applying it independently to the two axes, and
+using $r!/(r-1)!=r\le2^{r-1}$, gives for every $T$
+\begin{equation}\label{eq:collision-moment}
+ |c(T)|\mathbb P(T\subseteq\mathsf S)
+ \le(4k/a)^{d_X}(4k/b)^{d_Y}.
+\end{equation}
+
+The multigraph has maximum degree four. There are at most $k16^d$ connected
+$d$-edge sets: choose a root and encode a tour of length $2d$ traversing
+each edge in both directions, with at most four choices per step. Let
+$\mathcal C$ contain all connected edge sets of size at least two and put
+$q(C)=(4k/a)^{d_X(C)}(4k/b)^{d_Y(C)}$. Expanding into components, applying
+\eqref{eq:collision-moment}, and then dropping the disjointness restriction
+on component collections yields
+\[
+ |\mathbb EW-1|\le\prod_{C\in\mathcal C}(1+q(C))-1
+ \le\exp\left(k\sum_{d\ge2}(64k/s)^d\right)-1.
+\]
+Finally, if $f_{n,k}=(n)_k/n^k$, then
+$\log f_{n,k}^{-1}\le k(k-1)/(2(n-k+1))$.
+Divide \eqref{eq:collision-expectation} by $f_{n,k}$ and use
+$|\mathbb EW/f_{n,k}-1|\le e^{\sum_Cq(C)}/f_{n,k}-1$ to obtain
+\eqref{eq:connected-bound}.
+\end{proof}
+
+\begin{corollary}[relative balance for growing patterns]\label{cor:relative-grid}
+If $2\le k=k(N)=o(N^{1/3})$, then, uniformly over $\tau\in\Ssym_k$,
+\[
+ \frac{k!\,\#_\tau(\Pi_N)}{\binom Nk}
+ =1+O\left(\frac{k}{\sqrt N}+\frac{k^3}{N}\right),
+\]
+with an absolute implied constant.
+\end{corollary}
+\begin{proof}
+For $a=\lfloor\sqrt{\lfloor N/2\rfloor}\rfloor$, the construction gives
+\begin{equation}\label{eq:square-sandwich}
+ \mathrm{ES}^{\pm}(a,a)\preceq\Pi_N
+       \preceq\mathrm{ES}^{\pm}(a+3,a+3),
+\end{equation}
+where $\preceq$ denotes induced containment. At odd sizes the northeast
+point is represented by $(a+2,b+1,+1)$, whose two key ranks are last.
+Both square sizes differ from $N$ by $O(\sqrt N)$. In the stated range,
+their binomial normalizations differ from $\binom Nk$ by factors
+$\exp(O(k/\sqrt N))$, while Lemma~\ref{lem:connected-collisions} gives
+relative error $O(k^3/N)$ on either square. Monotonicity of pattern counts
+in \eqref{eq:square-sandwich} proves the assertion.
+\end{proof}
+
+\begin{proposition}[increasing patterns at the critical scale]
+\label{prop:increasing-threshold}
+For positive integers $a,b$ and $1\le k\le2ab$, write
+$I_{a,b}(k)=\#_{12\cdots k}(\mathrm{ES}^{\pm}(a,b))$. Then
+\begin{equation}\label{eq:increasing-exact}
+ I_{a,b}(k)=2\sum_{j=0}^{k-1}\binom{k-1}{j}
+       \binom{a+k-1-j}{k}\binom{b+j}{k},
+\end{equation}
+where a binomial coefficient is zero when its upper argument is smaller
+than its lower argument. In particular, the longest increasing subsequence
+has length $a+b-1$. For the universal family and $2\le k=k(N)\le N$, if $k/N^{1/3}\to c\in[0,\infty)$,
+then
+\begin{equation}\label{eq:increasing-critical}
+ \frac{k!\,\#_{12\cdots k}(\Pi_N)}{\binom Nk}\longrightarrow e^{-c^3/6}.
+\end{equation}
+If $k/N^{1/3}\to\infty$, the same relative density tends to zero.
+\end{proposition}
+\begin{proof}
+An increasing occurrence is a chain of distinct cells with both coordinates
+nondecreasing. A repeated cell is impossible because its two colours have
+opposite $X$- and $Y$-orders. Comparing the keys shows that a $+$ colour
+at the next point requires a strict increase in $x$, whereas a $-$ colour
+requires a strict increase in $y$; these are the only conditions. A colour
+word with $j$ plus signs after its first position therefore has
+$\binom{a+k-1-j}{k}\binom{b+j}{k}$ possible cell chains. Indeed, a weakly
+increasing $k$-tuple in $[a]$ with $j$ specified strict gaps is counted by
+$\binom{a+k-1-j}{k}$, by subtracting the number of preceding strict gaps.
+Summing over the $2\binom{k-1}{j}$ colour words proves
+\eqref{eq:increasing-exact}. Its nonzero terms satisfy
+$\max(0,k-b)\le j\le\min(k-1,a-1)$, giving the chain-length assertion.
+
+For a square let $J\sim\operatorname{Bin}(k-1,1/2)$ and
+$D_{m,k}=\prod_{r=0}^{k-1}(1-r/(2m^2))$. Reversing one falling factorial in
+\eqref{eq:increasing-exact} gives
+\begin{equation}\label{eq:increasing-product}
+ \frac{k!I_{m,m}(k)}{\binom{2m^2}{k}}
+ =\frac1{D_{m,k}}\mathbb E\prod_{r=0}^{k-1}
+       \left(1-\frac{(J-r)^2}{m^2}\right).
+\end{equation}
+This identity holds throughout $1\le k\le2m^2$. Terms outside
+$\max(0,k-m)\le J\le\min(k-1,m-1)$ vanish; all factors are positive on this
+support. If $k/(2m^2)^{1/3}\to c<\infty$, then $k=o(m)$ and
+\[
+ \sum_{r=0}^{k-1}(J-r)^2
+ =k\left(J-\frac{k-1}{2}\right)^2+\frac{k(k^2-1)}{12}.
+\]
+After division by $m^2$, the first term has expectation
+$k(k-1)/(4m^2)=o(1)$ and the second tends to $c^3/6$.
+The uniform logarithmic remainder is $O(k^5/m^4)=o(1)$, while
+$\log D_{m,k}=O(k^2/m^2)=o(1)$. The products lie in $[0,1]$, so convergence
+in probability also gives convergence of expectations. This proves the
+critical limit on squares, including $c=0$.
+
+For $2\le k\le2m-1$, bounding the product in
+\eqref{eq:increasing-product} by its quadratic exponential and using
+$D_{m,k}^{-1}\le\exp(k(k-1)/(2m^2))$ gives
+\[
+ \frac{k!I_{m,m}(k)}{\binom{2m^2}{k}}
+ \le \exp\left(-\frac{k(k-1)(k-5)}{12m^2}\right).
+\]
+For $k\ge2m$ the count is zero. Thus the relative increasing density tends
+to zero whenever $k^3/m^2\to\infty$.
+
+Finally use \eqref{eq:square-sandwich}. For $k=O(\sqrt N)$, its
+square binomial normalizations differ from $\binom Nk$ by
+$\exp(O(k/\sqrt N))$. At the critical scale this factor tends to one,
+and the square limits squeeze the middle count. In the supercritical
+regime the upper-square count is zero for $k\ge2(a+3)$; otherwise the
+normalization factor is bounded and the square exponential tends to zero.
+Together with Corollary~\ref{cor:relative-grid}, this proves the equivalence
+in Theorem~\ref{thm:main}(ii): if $k/N^{1/3}$ does not tend to zero, take
+a subsequence converging to a positive finite value or to infinity.
+The increasing pattern then prevents relative balance.
+\end{proof}
+
+\subsection{The local defect-two formula}
+
+For fixed $k$, the first nonuniform terms have coordinate defect two.
+The following local statistics encode their colour sums. Put
+$\rho=\tau^{-1}$ and define
+\[
+\begin{aligned}
+ T_x(\tau)&=\#\{i\leq k-2:\tau(i+1)\neq
+       \max(\tau(i),\tau(i+1),\tau(i+2))\},\\
+ T_y(\tau)&=T_x(\tau^{-1}),\qquad Q_k=\binom{k-2}{2},\\
+ H_i&={\bf1}_{i<k,\,\tau(i+1)<\tau(i)}
+      -{\bf1}_{i>1,\,\tau(i-1)<\tau(i)},\\
+ V_i&={\bf1}_{\tau(i)<k,\,\rho(\tau(i)+1)<i}
+      -{\bf1}_{\tau(i)>1,\,\rho(\tau(i)-1)<i},\\
+ M(\tau)&=(k-1)^2-\sum_{i=1}^kH_iV_i.
+\end{aligned}
+\]
+Here and below a false subscript condition contributes zero.
+
+\begin{lemma}[explicit defect two]\label{lem:defect-two}
+Let $D^{(2)}_\tau(a,b)$ count core subsets of coordinate defect exactly
+$2$.  Then
+\[
+\begin{aligned}
+ D^{(2)}_\tau(a,b)=2^{k-2}\bigg[&
+  (Q_k+T_x(\tau))\binom a{k-2}\binom bk\\
+ &+M(\tau)\binom a{k-1}\binom b{k-1}\\
+ &+(Q_k+T_y(\tau))\binom ak\binom b{k-2}\bigg].
+\end{aligned}
+\]
+\end{lemma}
+
+\begin{proof}
+Writing $d_x=k-r_x$ and $d_y=k-r_y$, defect two means
+$d_x+d_y=2$.  Thus $(d_x,d_y)$ is $(2,0)$, $(1,1)$, or $(0,2)$;
+a defect-two equality partition on one axis is either one triple or two
+disjoint pairs.  After factoring out $2^{k-2}$ compatible colour choices, the five
+ defect-two types and their normalized contributions are recorded in the next display.
+\[
+\begin{array}{c|c|c}
+\text{type}&\text{normalized placements}&\text{coordinate choices}\\ \hline
+\text{two disjoint $x$-pairs}&Q_k&\binom a{k-2}\binom bk\\
+\text{one $x$-triple}&T_x(\tau)&\binom a{k-2}\binom bk\\
+\text{one pair on each axis}&M(\tau)&\binom a{k-1}\binom b{k-1}\\
+\text{two disjoint $y$-pairs}&Q_k&\binom ak\binom b{k-2}\\
+\text{one $y$-triple}&T_y(\tau)&\binom ak\binom b{k-2}
+\end{array}
+\]
+Indeed, two disjoint $x$-pairs occupy two nonadjacent edges of the
+position path, giving $Q_k=\binom{k-2}{2}$.  For an $x$-triple, the
+colours form a positive prefix with decreasing ordinates followed by a
+negative suffix with increasing ordinates.  If the middle ordinate is
+largest, no cut works; otherwise exactly two cuts work.  This gives the
+$T_x$ row, and inversion gives the two $y$-rows.
+
+It remains to verify the mixed row.  Let $e=(u,u+1)$ be an adjacent
+position edge and let $f=(s,s+1)$ be an adjacent value edge, pulled back to
+positions $\rho(s),\rho(s+1)$.  Write their active-endpoint functions as
+\[
+ h_e(i)={\bf1}_{\{i=u,\,\tau(u)>\tau(u+1)\}}
+        -{\bf1}_{\{i=u+1,\,\tau(u)<\tau(u+1)\}},
+\]
+\[
+ v_f(i)={\bf1}_{\{i=\rho(s),\,\rho(s)>\rho(s+1)\}}
+        -{\bf1}_{\{i=\rho(s+1),\,\rho(s+1)>\rho(s)\}}.
+\]
+First suppose that $e$ and the pulled-back
+$f$ have the same two endpoints.  The two selected labels then lie over one
+cell, so distinctness forces their colours to be opposite.  Comparing the two
+key orders shows that the $+$ point comes first in $X$ and second in $Y$.
+Consequently the induced pair is necessarily a descent: the normalized weight
+is one for the descent and zero for the ascent.  In the descent the two active
+endpoints below are different, so $\sum_i h_e(i)v_f(i)=0$; in the ascent they
+coincide with product one.  Thus the desired weight
+$1-\sum_i h_e(i)v_f(i)$ already holds in this repeated-cell case.
+
+Assume now that the two equality edges do not have the same pair of endpoints.
+Each equality imposes exactly one colour constraint.  If
+$\tau(u)>\tau(u+1)$, the two points on $e$ appear in the required $X$-order
+exactly when the left endpoint has colour $+$; if
+$\tau(u)<\tau(u+1)$, exactly when the right endpoint has colour $-$.  Thus the
+active endpoint of $e$ and its forced colour are encoded by the unique nonzero
+value $h_e(i)\in\{1,-1\}$.  For $f$, the active endpoint is the later of
+$\rho(s),\rho(s+1)$, and its forced colour is $-v_f(i)$.  These assertions
+follow immediately by comparing the tied keys $-cy$ and $cx$, respectively.
+
+If the two active endpoints are different, the constraints concern two
+colours, so there are $2^{k-2}$ compatible words and the normalized weight is
+one.  If they coincide at $i$, two cases remain:
+\[
+\begin{array}{c|c|c}
+ \text{relation}&\text{two constraints}&
+ \text{normalized compatible-word count}\\ \hline
+ h_e(i)=-v_f(i)&\text{agree}&2\\
+ h_e(i)= v_f(i)&\text{conflict}&0.
+\end{array}
+\]
+Both cases are $1-h_e(i)v_f(i)$.  Because each edge has only one active
+endpoint, summing over all common endpoints gives the normalized weight
+\[
+ 1-\sum_i h_e(i)v_f(i)
+\]
+for every noncoincident pair $(e,f)$.  Together with the repeated-cell
+calculation above, this proves the formula for every edge pair.  Summing over
+all $(k-1)^2$ pairs gives
+\[
+ (k-1)^2-
+ \sum_i\left(\sum_{e\ni i}h_e(i)\right)
+       \left(\sum_{f\ni i}v_f(i)\right)
+ =(k-1)^2-\sum_iH_iV_i=M(\tau).
+\]
+The coordinate choices in the table now prove the lemma.
+\end{proof}
+
+Define the centered local vector and its norm by
+\begin{align}
+ g_k(\tau)&=T_x(\tau)+T_y(\tau)+\frac{11-4k}{3}
+ -\frac{k}{k-1}\sum_{i=1}^kH_iV_i,\label{eq:g-local}\\
+ \lambda_{k,\tau}&=\frac{2^{k-2}}{k!(k-2)!}g_k(\tau),\qquad
+ \Lambda_k=\frac{2^{k-2}}{k!(k-2)!}
+       \max_\tau|g_k(\tau)|.\label{eq:lambda-local}
+\end{align}
+For each fixed $k$,
+\begin{align}
+ \#_\tau(\mathrm{ES}^{\pm}(m,m))
+ -\frac1{k!}\binom{2m^2}{k}
+ &=\lambda_{k,\tau}m^{2k-2}+O_k(m^{2k-3}),\label{eq:leading-pattern}\\
+ \delta_{\mathrm{ES}^{\pm}(m,m),k}
+ &=\Lambda_km^{2k-2}+O_k(m^{2k-3}).\label{eq:leading-delta}
+\end{align}
+
+These statistics compress the two one-axis triple classes and the mixed
+pair class in the preceding table.  For example, $\tau=4213$ has
+$T_x=2$, $T_y=1$, and $\sum_iH_iV_i=0$, so
+$g_4(4213)=4/3$ and $\lambda_{4,4213}=1/9$.
+In the square case, the coefficient in Lemma~\ref{lem:defect-two}, after
+factoring out $2^{k-2}/(k!(k-2)!)$, is
+\[
+ R_k(\tau)=T_x(\tau)+T_y(\tau)+2Q_k+
+             \frac{k}{k-1}M(\tau).
+\]
+For uniform $\tau\in\Ssym_k$, write $\gamma_k=2^{k-2}/(k!(k-2)!)$. The defect-zero and defect-one
+classes are pattern-uniform and together contribute
+\[
+ P_{01}(m)=2^k\left[\binom mk^2+(k-1)\binom mk\binom m{k-1}\right].
+\]
+There are $k-1$ possible doubled blocks on each axis, each with colour
+weight $2^{k-1}$, which gives the second term. Expanding the falling
+factorials, the coefficient of $m^{2k-2}$ in $P_{01}$ is
+$\gamma_k(-6k^2+14k-10)/3$. The profile average is
+$\binom{2m^2}{k}/k!$, whose corresponding coefficient is $-\gamma_k$.
+Since the defect-two contribution is $\gamma_kR_k(\tau)$, it follows that
+\[
+ \mathbb ER_k=\frac{6k^2-14k+7}{3},\qquad
+ R_k(\tau)-\mathbb ER_k
+ =T_x+T_y+\frac{11-4k}{3}-\frac{k}{k-1}\sum_iH_iV_i.
+\]
+This identifies the centered defect-two coefficient as $\lambda_{k,\tau}$.
+All higher defects have degree at most $2k-3$, proving
+\eqref{eq:leading-pattern}; taking the maximum over the fixed finite set
+$\Ssym_k$ gives \eqref{eq:leading-delta}. Also
+$\mathbb ET_x=\mathbb ET_y=2(k-2)/3$, since each triple has a nonmaximal
+middle entry with probability $2/3$. Substitution in $R_k$ gives
+$\mathbb E\sum_iH_iV_i=(k-1)/k$ and hence
+$\mathbb EM=(k-1)^2-(k-1)/k$, including $k=2$.
+After forming
+$\tau^{-1}$, each $g_k(\tau)$ costs $O(k)$ to evaluate, so
+$\Lambda_k$ is computable in $O(k\,k!)$ time.
+
+\subsection{The fixed-aspect formula and a four-point baseline}
+The exact formula and the defect-two lemma also give the following
+unoptimized fixed-aspect consequence.  Put
+$\mu_k=2(k-2)/3$ and $S(\tau)=\sum_iH_iV_i$.  For $\theta>0$, define
+\begin{equation}\label{eq:h-local}
+ h_{k,\tau}(\theta)
+ =\theta^{-1}(T_x(\tau)-\mu_k)
+  +1-\frac{k}{k-1}S(\tau)
+  +\theta(T_y(\tau)-\mu_k).
+\end{equation}
+If $a,b\to\infty$ with $a/b\to\theta$, the defect-two terms in
+Lemma~\ref{lem:defect-two}, after centering by the uniform profile, give
+\begin{align}
+ \#_\tau(\mathrm{ES}^{\pm}(a,b))
+ -\frac1{k!}\binom{2ab}{k}
+ &=\frac{2^{k-2}(ab)^{k-1}}{k!(k-2)!}
+   h_{k,\tau}(a/b)+O_k((a+b)^{2k-3}),
+ \label{eq:rectangular-leading}\\
+ \frac{\#_\tau(\mathrm{ES}^{\pm}(a,b))-\binom{2ab}{k}/k!}{(2ab)^{k-1}}
+ &=\frac{h_{k,\tau}(a/b)}{2k!(k-2)!}+o_k(1).
+ \label{eq:rectangular-leading-normalized}
+\end{align}
+Indeed, the $(2,0)$, $(1,1)$, and $(0,2)$ defect classes have respectively
+aspect factors $\theta^{-1}$, $1$, and $\theta$; their uniform averages are
+$\mu_k$, $1-\frac{k}{k-1}\mathbb E S$, and $\mu_k$, as computed above.
+All higher-defect terms have degree at most $2k-3$.  In particular,
+$h_{k,\tau}(1)=g_k(\tau)$, and exchanging the axes exchanges $\tau$ with
+$\tau^{-1}$ and $\theta$ with $\theta^{-1}$.  The aspect weights separate the two one-axis triple contributions from
+the mixed contribution.  Section~\ref{sec:sharp-four} uses this separation
+to optimize the residual after boundary completion and insertions.
+
+For $k=4$, one direct local evaluation is enough for the comparison needed
+here:
+\[
+ h_{4,1243}(\theta)=-\frac{\theta^{-1}+1+\theta}{3},
+ \qquad
+ \frac{|h_{4,1243}(\theta)|}{96}
+ =\frac{\theta^{-1}+1+\theta}{288}\geq\frac1{96}>\frac1{192}.
+\]
+Thus the oriented inserted family of Theorem~\ref{thm:sharp-four} improves
+every standard fixed-aspect complete core.  The square core has the exact
+formulas below.
+
+\subsection{Exact four-point profiles and the published square coefficient}
+For $k=4$, direct collection of the composition terms in
+\eqref{eq:exact-rectangle} gives six exact polynomial classes for $m\ge2$
+(some coincide at small $m$):
+\[
+\begin{array}{c|c|l}
+\displaystyle
+ \frac{144}{m^2(m^2-1)}
+ \left(\#_\tau-\frac1{24}\binom{2m^2}{4}\right)
+ &\#&\tau\\ \hline
+ -5(4m^2-9)&1&1234\\
+ -(12m^2-13)&3&1243,1324,1432\\
+ 4m^2-3&9&\begin{gathered}1342,1423,2143,2413,2431,\\
+                         3142,3412,4132,4231\end{gathered}\\
+ -(4m^2-5)&3&2134,3214,4321\\
+ -11&6&2314,2341,3124,3421,4123,4312\\
+ 16m^2-3&2&3241,4213
+\end{array}
+\]
+The table is an exact substitution in the finite rectangle formula, with no
+asymptotic truncation.  It yields
+\begin{equation}\label{eq:k4-exact}
+\delta_{\mathrm{ES}^{\pm}(m,m),4}
+=\begin{cases}
+ \dfrac{m^2(m^2-1)(16m^2-3)}{144},&m=2,3,\\[4pt]
+ \dfrac{5m^2(m^2-1)(4m^2-9)}{144},&m\ge4.
+\end{cases}
+\end{equation}
+In particular the square-grid coefficient is $\Lambda_4=5/36$ against
+$m^6$, or $5/288$ against $N^3$ since $N=2m^2$.  For every $k\ge2$, \eqref{eq:g-local} gives
+$g_k(12\cdots k)=-(k+1)/3$, so $\Lambda_k>0$.
+
+\begin{remark}[comparison with the published square coefficient]
+\label{rem:bll-correction}
+In \eqref{eq:keys}, colours $c=+1$ and $c=-1$ correspond respectively
+to the rotated copies $P(\varepsilon)$ and $P(-\varepsilon)$ of
+\cite[Definitions~5.3 and 5.6]{BLL}; Section~\ref{sec:construction}
+verifies equality of both coordinate orders.
+Their square side $n$ is our $m$: both constructions have $N=2m^2$
+and use the centred profile statistic.  Our exact formula therefore
+gives $5m^6/36=5N^3/288$ as the leading term, rather than the printed
+$(2/9)m^6$ in
+\cite[Theorem~8]{BLL}.  This bibliographic correction is not used in any
+bound: the coefficient follows here from
+Theorem~\ref{thm:exact-rectangle}, Lemma~\ref{lem:defect-two}, and
+\eqref{eq:k4-exact}.  For instance, at $m=4$ the exact count is
+$\#_{1234}(\mathrm{ES}^{\pm}(4,4))=1040$.
+\end{remark}
+
+\input{sharp_four}
+
+\medskip\noindent\textbf{Concluding remarks.}
+The exponent-optimal family is $k$-independent, while completion constants
+depend on the allowed orientations. The relative-balancing range of this
+family is sharp. Global constants, optimal aspects beyond the tabulated orders,
+and growing-pattern ranges attainable by other families remain open.
+
+\medskip\noindent\textbf{Declarations.} This work received no funding. The authors
+declare no financial or non-financial conflicts of interest.
+
+\noindent\textbf{Data availability.} No external datasets are used.
+The validation source is at
+\url{https://github.com/AutoclickerI/near-balanced-permutations/tree/v1.1.0}.
+It includes exact primal/dual certificates over $\mathbb Q$ and
+$\mathbb Q(\sqrt3)$ and finite regression checkers; the analytic proofs
+are in the article. From the repository root run \texttt{bash validation/run.sh}.
+
+\noindent\textbf{Use of generative AI.} OpenAI's GPT-5.6 and GPT-6 Astra
+assisted literature searches, proof exploration and checking, auxiliary
+computations, and LaTeX and English editing.  The authors
+take responsibility for the mathematical arguments, sources, computations, and
+text.
+
+\begin{thebibliography}{99}
+\small
+\setlength{\emergencystretch}{2em}
+\setlength{\itemsep}{0pt}
+
+\bibitem{BLL}
+G.~Beniamini, N.~Lavee, and N.~Linial,
+\newblock How balanced can permutations be?,
+\newblock \emph{Combinatorica} 45 (2025), Article 9,
+\newblock \href{https://doi.org/10.1007/s00493-024-00127-x}
+ {\texttt{doi:10.1007/s00493-024-00127-x}}.
+
+\bibitem{Cooper}
+J.~N. Cooper,
+\newblock Quasirandom permutations,
+\newblock \emph{J. Combin. Theory Ser. A} 106 (2004), 123--143,
+\newblock \href{https://doi.org/10.1016/j.jcta.2004.01.006}
+ {\texttt{doi:10.1016/j.jcta.2004.01.006}}.
+
+\bibitem{CooperArithmetic}
+J.~N. Cooper,
+\newblock Quasirandom arithmetic permutations,
+\newblock \emph{J. Number Theory} 114 (2005), 153--169,
+\newblock \href{https://doi.org/10.1016/j.jnt.2005.05.003}
+ {\texttt{doi:10.1016/j.jnt.2005.05.003}}.
+
+\bibitem{CooperDukesFuzzy}
+J.~Cooper and P.~J. Dukes,
+\newblock Fuzzy latin squares and balanced permutation pattern statistics,
+\newblock preprint (2026),
+\newblock \href{https://arxiv.org/abs/2608.05335}
+ {\texttt{arXiv:2608.05335}}.
+
+\bibitem{CooperPetrarca}
+J.~N. Cooper and A.~Petrarca,
+\newblock Symmetric and asymptotically symmetric permutations,
+\newblock preprint (2008),
+\newblock \href{https://arxiv.org/abs/0801.4181}
+ {\texttt{arXiv:0801.4181}}.
+
+\bibitem{HoppenEtAl}
+C.~Hoppen, Y.~Kohayakawa, C.~G. Moreira, B.~R\'ath, and
+R.~M. Sampaio,
+\newblock Limits of permutation sequences,
+\newblock \emph{J. Combin. Theory Ser. B} 103 (2013), 93--113,
+\newblock \href{https://doi.org/10.1016/j.jctb.2012.09.003}
+ {\texttt{doi:10.1016/j.jctb.2012.09.003}}.
+
+\bibitem{KralPikhurko}
+D.~Kr\'al' and O.~Pikhurko,
+\newblock Quasirandom permutations are characterized by 4-point densities,
+\newblock \emph{Geom. Funct. Anal.} 23 (2013), 570--579,
+\newblock \href{https://doi.org/10.1007/s00039-013-0216-9}
+ {\texttt{doi:10.1007/s00039-013-0216-9}}.
+
+\bibitem{SeymourZaslavsky}
+P.~D. Seymour and T.~Zaslavsky,
+\newblock Averaging sets: A generalization of mean values and spherical designs,
+\newblock \emph{Advances in Mathematics} 52 (1984), 213--240,
+\newblock \href{https://doi.org/10.1016/0001-8708(84)90022-7}
+ {\texttt{doi:10.1016/0001-8708(84)90022-7}}.
+
+\end{thebibliography}
+
+\end{document}
